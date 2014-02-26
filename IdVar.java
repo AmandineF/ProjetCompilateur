@@ -6,9 +6,9 @@ public class IdVar extends Ident {
 	
 	//Constructeur
 	public IdVar(String t, int i){
-		if (t.startsWith("b")){
-			type = "boolean";	
-		}else type = "int";
+		if (t.startsWith("B")){
+			type = "BOOLEEN";	
+		}else type = "ENTIER";
 		
 		offset = i;
 	}
@@ -23,9 +23,9 @@ public class IdVar extends Ident {
 	//Affichage
 	public void show(String s){
 		
-		if(type.equals("boolean")){
+		if(type.equals("BOOLEEN")){
 			Ecriture.ecrireString("VARIABLE | "+ s +" | BOOLEEN | OFFSET ="+offset);
-		}else if(type.equals("int")){
+		}else if(type.equals("ENTIER")){
 			Ecriture.ecrireString("VARIABLE | "+ s +" | ENTIER | OFFSET ="+offset);
 		}else{
 			Ecriture.ecrireString("ERREUR SHOW");
