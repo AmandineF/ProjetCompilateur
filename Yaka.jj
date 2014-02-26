@@ -169,13 +169,13 @@ void defConst() : {}
 
 void valConst() : {}{
   <entier> {YakaTokenManager.entierAStocker = YakaTokenManager.entierLu;
- 	    YakaTokenManager.typeAStocker = "Entier"; }		
+ 	    YakaTokenManager.typeAStocker = "entier"; }		
  | <ident> {YakaTokenManager.entierAStocker = tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
  	    YakaTokenManager.typeAStocker = tabIdent.chercheIdent(YakaTokenManager.identLu).getType();}				
  | <VRAI>  {YakaTokenManager.entierAStocker = YakaTokenManager.entierLu;
- 	    YakaTokenManager.typeAStocker = "Booleen";}				
+ 	    YakaTokenManager.typeAStocker = "booleen";}				
  | <FAUX>  {YakaTokenManager.entierAStocker = YakaTokenManager.entierLu;
-            YakaTokenManager.typeAStocker = "Booleen";}				
+            YakaTokenManager.typeAStocker = "booleen";}				
 }
 
 
@@ -196,8 +196,8 @@ void declVar() : {}
 
 void type() :{}
 {
-   <ENTIER> {YakaTokenManager.typeAStocker = "Entier";}		
- | <BOOLEEN> {YakaTokenManager.typeAStocker = "Booleen";}
+   <ENTIER> {YakaTokenManager.typeAStocker = "entier";}		
+ | <BOOLEEN> {YakaTokenManager.typeAStocker = "booleen";}
 }
 /*
  * Syntaxe des instructions.

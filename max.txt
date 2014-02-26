@@ -1,8 +1,7 @@
 PROGRAMME max
 CONST
-aa = 10,
-ba = VRAI,
-cc = aa;
-VAR ENTIER c1, c2;
-VAR BOOLEAN b1,b2;
+aa=10,
+ba=VRAI;
+VAR eNTIER c1,c2;
+VAR bOOLEEN b1,b2;
 FPROGRAMME
