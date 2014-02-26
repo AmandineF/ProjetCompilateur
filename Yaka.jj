@@ -18,7 +18,10 @@ PARSER_BEGIN(Yaka)
 
 
 public class Yaka {
-  public static TabIdent tabIdent;
+  public static TabIdent tabIdent=new TabIdent(30);
+  public static IdConst idConst1;
+  public static IdVar idVar1;
+  public static IdVar idVar2;
   /*public Declaration declaration;*/
   /*public Expression expression;*/
   public static YVM yvm;
@@ -141,9 +144,9 @@ TOKEN  :
 void prog() : {}
 {
    <PROGRAMME> <ident>	
-   bloc()
+   bloc(){tabIdent.show();}
    <FPROGRAMME> 
-   {tabIdent.show();}
+   
 }
 
 void bloc() : {}{
@@ -162,7 +165,8 @@ void defConst() : {}
 	
   <ident>  {YakaTokenManager.identAStocker = YakaTokenManager.identLu;}	
    "=" valConst() 
-   {tabIdent.rangeIdent(YakaTokenManager.identAStocker, new IdConst(YakaTokenManager.typeAStocker,YakaTokenManager.entierAStocker));
+   {	   idConst1 = new IdConst(YakaTokenManager.typeAStocker,YakaTokenManager.entierAStocker);	
+   	   tabIdent.rangeIdent(YakaTokenManager.identAStocker, idConst1);
     }
   
 }
@@ -172,23 +176,25 @@ void valConst() : {}{
  	    YakaTokenManager.typeAStocker = "entier"; }		
  | <ident> {YakaTokenManager.entierAStocker = tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
  	    YakaTokenManager.typeAStocker = tabIdent.chercheIdent(YakaTokenManager.identLu).getType();}				
- | <VRAI>  {YakaTokenManager.entierAStocker = YakaTokenManager.entierLu;
+ | <VRAI>  {YakaTokenManager.entierAStocker = -1;
  	    YakaTokenManager.typeAStocker = "booleen";}				
- | <FAUX>  {YakaTokenManager.entierAStocker = YakaTokenManager.entierLu;
+ | <FAUX>  {YakaTokenManager.entierAStocker = 0;
             YakaTokenManager.typeAStocker = "booleen";}				
 }
 
 
 void declVar() : {}
 {
-  <VAR> {YakaTokenManager.offset = -2;} type() 	
+  <VAR> {YakaTokenManager.offset = YakaTokenManager.offset-2;} type() 	
   <ident> {YakaTokenManager.identAStocker = YakaTokenManager.identLu;
-  	   tabIdent.rangeIdent(YakaTokenManager.identAStocker, new IdVar(YakaTokenManager.typeAStocker,YakaTokenManager.offset));
+  	  idVar1 = new IdVar(YakaTokenManager.typeAStocker,YakaTokenManager.offset);
+  	   tabIdent.rangeIdent(YakaTokenManager.identAStocker, idVar1 );
   	  }				
   ("," 
       <ident>  {YakaTokenManager.offset = YakaTokenManager.offset -2;
       	        YakaTokenManager.identAStocker = YakaTokenManager.identLu;
-  	   	tabIdent.rangeIdent(YakaTokenManager.identAStocker, new IdVar(YakaTokenManager.typeAStocker,YakaTokenManager.offset));
+      	        idVar2 =  new IdVar(YakaTokenManager.typeAStocker,YakaTokenManager.offset);
+  	   	tabIdent.rangeIdent(YakaTokenManager.identAStocker,idVar2);
        		}	
   )* ";"
 	

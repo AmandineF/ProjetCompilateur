@@ -24,9 +24,9 @@ public class IdVar extends Ident {
 	public void show(String s){
 		
 		if(type.equals("boolean")){
-			Ecriture.ecrireString("VARIABLE | "+ s +" | BOOLEEN | OFFSET ="+offset);
+			Ecriture.ecrireString("VARIABLE | "+ s +" | BOOLEEN | OFFSET ="+offset+"\n");
 		}else if(type.equals("int")){
-			Ecriture.ecrireString("VARIABLE | "+ s +" | ENTIER | OFFSET ="+offset);
+			Ecriture.ecrireString("VARIABLE | "+ s +" | ENTIER | OFFSET ="+offset+"\n");
 		}else{
 			Ecriture.ecrireString("ERREUR SHOW");
 		}
