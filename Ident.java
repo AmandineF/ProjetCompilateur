@@ -8,6 +8,6 @@ public abstract class Ident {
 	public String getType(){
 		return type;
 	}
-	
-	public void show(String s){}
-}
+	public abstract int getValue(){	}
+	public abstract void show(String s){}
+}                                                   
