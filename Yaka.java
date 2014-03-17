@@ -3,7 +3,7 @@ public class Yaka implements YakaConstants {
 
   public static Declaration declaration = new Declaration();
   public static TabIdent tabIdent = new TabIdent(50);
-  /*public static Expression expression = new Expression();*/
+  public static Expression expression = new Expression();
   public static YVM yvm = new YVM();
 
   public static void main(String args[]) {
@@ -13,14 +13,20 @@ public class Yaka implements YakaConstants {
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
       try {
-        input = new java.io.FileInputStream(args[args.length-1]+".yaka");
+        input = new java.io.FileInputStream(args[args.length-1]+".txt");
       } catch (java.io.FileNotFoundException e) {
         System.out.println("Fichier introuvable.");
         return;
       }
     } else if (args.length==0) {
-      System.out.println("Lecture sur l'entree standard...");
-      input = System.in;
+      try{
+      input = new java.io.FileInputStream("max2.txt");
+      //System.out.println("Lecture sur l'entree standard...");
+      //input = System.in;
+      }catch (java.io.FileNotFoundException e) {
+              System.out.println("Fichier introuvable -> Lecture sur l'entree standard...");
+              input = System.in;
+      }
     } else {
       System.out.println("Usage: java Gram [fichier]");
       return;
@@ -412,19 +418,19 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case entier:
       jj_consume_token(entier);
-            yvm.iConst();
+            yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());
       break;
     case ident:
       jj_consume_token(ident);
-            yvm.iLoad();
+            yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());
       break;
     case VRAI:
       jj_consume_token(VRAI);
-           yvm.iLoad();
+           yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());
       break;
     case FAUX:
       jj_consume_token(FAUX);
-           yvm.iLoad();
+           yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());
       break;
     default:
       jj_la1[18] = jj_gen;
@@ -437,21 +443,27 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 42:
       jj_consume_token(42);
+       expression.ajoutOp("=");
       break;
     case 45:
       jj_consume_token(45);
+         expression.ajoutOp("<>");
       break;
     case 46:
       jj_consume_token(46);
+        expression.ajoutOp("<");
       break;
     case 47:
       jj_consume_token(47);
+         expression.ajoutOp("<=");
       break;
     case 48:
       jj_consume_token(48);
+         expression.ajoutOp(">");
       break;
     case 49:
       jj_consume_token(49);
+         expression.ajoutOp(">=");
       break;
     default:
       jj_la1[19] = jj_gen;
@@ -464,15 +476,15 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 50:
       jj_consume_token(50);
-         yvm.iAdd();
+         yvm.iAdd(); expression.ajoutOp("+");
       break;
     case 51:
       jj_consume_token(51);
-           yvm.iSub();
+           yvm.iSub(); expression.ajoutOp("-");
       break;
     case OU:
       jj_consume_token(OU);
-          yvm.iOr();
+          yvm.iOr(); expression.ajoutOp("ou");
       break;
     default:
       jj_la1[20] = jj_gen;
@@ -485,15 +497,15 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 52:
       jj_consume_token(52);
-         yvm.iMul();
+         yvm.iMul(); expression.ajoutOp("*");
       break;
     case 53:
       jj_consume_token(53);
-         yvm.iDiv();
+         yvm.iDiv(); expression.ajoutOp("/");
       break;
     case ET:
       jj_consume_token(ET);
-         yvm.iAnd();
+         yvm.iAnd(); expression.ajoutOp("et");
       break;
     default:
       jj_la1[21] = jj_gen;
@@ -506,11 +518,11 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 51:
       jj_consume_token(51);
-         yvm.oppose();
+         yvm.oppose();expression.ajoutOp("neg");
       break;
     case NON:
       jj_consume_token(NON);
-         yvm.neg();
+         yvm.neg(); expression.ajoutOp("non");
       break;
     default:
       jj_la1[22] = jj_gen;

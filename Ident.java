@@ -2,7 +2,7 @@
 public abstract class Ident {
 	
 	//attribut
-	protected String type;// prend "boolean" ou "int" comme seules valeurs
+	protected String type;// prend "BOOLEEN" ou "ENTIER" comme seules valeurs
 
 	//méthode de récupération du type
 	public String getType(){

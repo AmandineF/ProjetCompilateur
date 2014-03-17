@@ -12,40 +12,47 @@ public class YVM {
 	}
         
         public void entete() {
-        	if (arret) break;
+        	if (!arret){
                 this.programme="entete\n";
+                }
         }
         
         public void incVar(){
-        	if (arret) break;
+        	if (!arret){
         	this.nbVar+=2;
+        	}
         }
         
         public void ouvrePrinc() {
-        	if (arret) break;
+        	if (!arret){
                 this.programme+="ouvrePrinc "+this.nbVar+"\n";
+                }
         }
         
         public void ecrireChaine() {
-        	if (arret) break;
+        	if (!arret){
         	this.programme+="ecrireChaine "+YakaTokenManager.chaineLue+"\n";
+        	}
         }
         
         public void lireEnt() {
-        	if (arret) break;
+        	if (!arret){
         	this.programme+="lireEnt "+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n";
+        	}
         }
         
         public void aLaLigne() {
-        	if (arret) break;
+        	if (!arret){
         	this.programme+="aLaLigne\n";
+        	}
         }
         
         public void traduction() {
-        	if (arret) break;
-        	this.var();
-        	this.calcul();
-        	this.ecrireEnt();
+        	if (!arret){
+			this.var();
+			this.calcul();
+			this.ecrireEnt();
+		}
         }
         
         public void var(){
@@ -88,9 +95,10 @@ public class YVM {
         }
         
         public void queue() {
-        	if (arret) break;
-        	this.programme+="queue\n";
-        	System.out.println(this.programme);
+        	if (!arret){
+			this.programme+="queue\n";
+			System.out.println(this.programme);
+        	}
         }
        
 }

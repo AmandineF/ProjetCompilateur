@@ -31,14 +31,20 @@ public class Yaka {
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
       try {
-        input = new java.io.FileInputStream(args[args.length-1]+".yaka");
+        input = new java.io.FileInputStream(args[args.length-1]+".txt");
       } catch (java.io.FileNotFoundException e) {
         System.out.println("Fichier introuvable.");
         return;
       }
     } else if (args.length==0) {
-      System.out.println("Lecture sur l'entree standard...");
-      input = System.in;
+      try{
+      input = new java.io.FileInputStream("max.txt");
+      //System.out.println("Lecture sur l'entree standard...");
+      //input = System.in;
+      }catch (java.io.FileNotFoundException e) {
+      	      System.out.println("Fichier introuvable -> Lecture sur l'entree standard...");
+      	      input = System.in;
+      }
     } else {
       System.out.println("Usage: java Gram [fichier]");
       return;
@@ -273,7 +279,7 @@ void primaire(): {}
 
 void valeur() : {}
 { <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident> {yvm.iLoad();  expression.ajoutType(TabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}		
+ | <ident> {yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}		
  | <VRAI> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  

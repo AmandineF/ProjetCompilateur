@@ -31,7 +31,7 @@ public class TabIdent {
 		}
 	}
 	
-	public String getTypeIdent(String k){
-		return this.chercheIdent(k).getType();
+	public  String getTypeIdent(String k){
+		return chercheIdent(k).getType();
 	}
 }
