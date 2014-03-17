@@ -30,4 +30,8 @@ public class TabIdent {
 		    table.get(key).show(key);
 		}
 	}
+	
+	public String getTypeIdent(String k){
+		return this.chercheIdent(k).getType();
+	}
 }

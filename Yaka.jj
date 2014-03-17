@@ -21,7 +21,7 @@ public class Yaka {
 
   public static Declaration declaration = new Declaration();
   public static TabIdent tabIdent = new TabIdent(50);
-  /*public static Expression expression = new Expression();*/
+  public static Expression expression = new Expression();
   public static YVM yvm = new YVM();
 
   public static void main(String args[]) { 
@@ -272,40 +272,40 @@ void primaire(): {}
 }
 
 void valeur() : {}
-{ <entier> {yvm.iConst();}		
- | <ident> {yvm.iLoad();}		
- | <VRAI> {yvm.iLoad();}		
- | <FAUX> {yvm.iLoad();}	
+{ <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
+ | <ident> {yvm.iLoad();  expression.ajoutType(TabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}		
+ | <VRAI> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
+ | <FAUX> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  
 }
 
 void opRel() : {}
 {
-   "=" 		
- | "<>" 	
- | "<" 		
- | "<=" 	
- | ">" 		
- | ">=" 	
+   "="{expression.ajoutOp("=");} 		
+ | "<>" {expression.ajoutOp("<>");} 	
+ | "<" {expression.ajoutOp("<");} 		
+ | "<=" {expression.ajoutOp("<=");} 	
+ | ">" 	{expression.ajoutOp(">");} 	
+ | ">=" {expression.ajoutOp(">=");} 	
 } 
 
 void opAdd() : {}
 {
-    "+"	{yvm.iAdd();}
-  |  "-"  {yvm.iSub();}
-  | <OU> {yvm.iOr();}	
+    "+"	{yvm.iAdd(); expression.ajoutOp("+");}
+  |  "-"  {yvm.iSub(); expression.ajoutOp("-");}
+  | <OU> {yvm.iOr(); expression.ajoutOp("ou");}	
 }
 
 void opMul() : {}
 {
-  "*"	{yvm.iMul();}	
-  | "/"	{yvm.iDiv();}
-  | <ET>{yvm.iAnd();}	
+  "*"	{yvm.iMul(); expression.ajoutOp("*");}	
+  | "/"	{yvm.iDiv(); expression.ajoutOp("/");}
+  | <ET>{yvm.iAnd(); expression.ajoutOp("et");}	
 } 
 
 void opNeg() : {}
-{ "-" 	{yvm.oppose();}	
- | <NON>{yvm.neg();}	
+{ "-" 	{yvm.oppose();expression.ajoutOp("neg");}	
+ | <NON>{yvm.neg(); expression.ajoutOp("non");}	
 }
 
 

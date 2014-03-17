@@ -1,33 +1,48 @@
 public class YVM {
         private String programme;
         private int nbVar=2;
-        private boolean arret;
+        private boolean arret = false;
+        
+        public void stop(boolean b){
+		//arret du programme si b = false
+		if(b){}
+		else{
+			arret = true;
+		}
+	}
         
         public void entete() {
+        	if (arret) break;
                 this.programme="entete\n";
         }
         
         public void incVar(){
+        	if (arret) break;
         	this.nbVar+=2;
         }
         
         public void ouvrePrinc() {
+        	if (arret) break;
                 this.programme+="ouvrePrinc "+this.nbVar+"\n";
         }
         
         public void ecrireChaine() {
+        	if (arret) break;
         	this.programme+="ecrireChaine "+YakaTokenManager.chaineLue+"\n";
         }
         
         public void lireEnt() {
+        	if (arret) break;
         	this.programme+="lireEnt "+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n";
         }
         
         public void aLaLigne() {
+        	if (arret) break;
         	this.programme+="aLaLigne\n";
         }
         
         public void traduction() {
+        	if (arret) break;
         	this.var();
         	this.calcul();
         	this.ecrireEnt();
@@ -73,6 +88,7 @@ public class YVM {
         }
         
         public void queue() {
+        	if (arret) break;
         	this.programme+="queue\n";
         	System.out.println(this.programme);
         }

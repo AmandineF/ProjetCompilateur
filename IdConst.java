@@ -9,18 +9,18 @@ public class IdConst extends Ident {
 		if (b){
 		value = 1;
 		} else value =0;
-		type = "boolean";
+		type = "BOOLEEN";
 	}
 	
 	public IdConst(int i){
 		value = i;
-		type ="int";
+		type ="ENTIER";
 	}
 	
 	public IdConst(String t, int i){
-		if (t.startsWith("b")){
-			type = "boolean";	
-		}else type = "int";
+		if (t.startsWith("b") || t.startsWith("B")){
+			type = "BOOLEEN";	
+		}else type = "ENTIER";
 		
 		value = i;
 	}
@@ -33,10 +33,10 @@ public class IdConst extends Ident {
 	
 	//Méthodes toString
 	public void show(String s){
-		if(type.equals("boolean")){
-			Ecriture.ecrireString("CONSTANTE | "+ s +" | BOOLEEN | VALEUR ="+value+ "\n");
-		}else if(type.equals("int")){
-			Ecriture.ecrireString("CONSTANTE | "+ s +" | ENTIER | VALEUR ="+value+ "\n");
+		if(type.equals("BOOLEEN")){
+			Ecriture.ecrireString("CONSTANTE | "+ s +" | BOOLEEN | VALEUR ="+value+"\n");
+		}else if(type.equals("ENTIER")){
+			Ecriture.ecrireString("CONSTANTE | "+ s +" | ENTIER | VALEUR ="+value+"\n");
 		}else{
 			Ecriture.ecrireString("ERREUR SHOW");
 		}

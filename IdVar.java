@@ -6,7 +6,7 @@ public class IdVar extends Ident {
 	
 	//Constructeur
 	public IdVar(String t, int i){
-		if (t.startsWith("B")){
+		if (t.startsWith("b") || t.startsWith("B")){
 			type = "BOOLEEN";	
 		}else type = "ENTIER";
 		
