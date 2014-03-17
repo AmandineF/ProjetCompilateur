@@ -1,0 +1,140 @@
+import java.util.*;
+
+public class Expression{
+
+	private LinkedList<String> loperateur = new LinkedList<String>();
+	private LinkedList<String> ltype = new LinkedList<String>();
+
+	public boolean controleType(){
+
+		String op = loperateur.getLast();
+		String typeA = ltype.get(ltype.size()-1);
+		String typeB = ltype.getLast();
+
+		switch(op){
+
+		case "+":
+		case "-":
+		case "*":
+		case "/":
+			if (!( typeA.equals("ENTIER") && typeB.equals("ENTIER") )) {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("ERREUR");
+				loperateur.removeLast();
+				return false;
+			}else {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("ENTIER");
+				loperateur.removeLast();
+				return true;
+			}
+		case "<":
+		case ">":
+		case "<=":
+		case ">=":
+			if (!( typeA.equals("ENTIER") && typeB.equals("ENTIER") )) {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("ERREUR");
+				loperateur.removeLast();
+				return false;
+			}else {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("BOOLEEN");
+				loperateur.removeLast();
+				return true;
+			}
+
+		case "=":
+		case "<>":
+			if ((!( typeA.equals("ENTIER") && typeB.equals("ENTIER") )) || (!(typeA.equals("BOOLEEN") && typeB.equals("BOOLEEN")))){
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("ERREUR");
+				loperateur.removeLast();
+				return false;
+			}else {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("BOOLEEN");
+				loperateur.removeLast();
+				return true;
+			}
+
+		case "et":
+		case "ou":
+			if (!( typeA.equals("BOOLEEN") && typeB.equals("BOOLEEN") )) {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("ERREUR");
+				loperateur.removeLast();
+				return false;
+			}else {
+				ltype.removeLast();
+				ltype.removeLast();
+				ltype.addLast("BOOLEEN");
+				loperateur.removeLast();
+				return true;
+			}
+
+		case "neg":
+			if (!typeB.equals("ENTIER")) {
+				ltype.removelast();
+				ltype.addLast("ERREUR");
+				loperateur.removeLast();
+				return false;
+			}else {
+				ltype.removelast();
+				ltype.addLast("ENTIER");
+				loperateur.removeLast();
+				return true;
+			}
+
+		case "non":
+			if (!typeB.equals("BOOLEEN")) {
+				ltype.removelast();
+				ltype.addLast("ERREUR");
+				loperateur.removeLast();
+				return false;
+			}else {
+				ltype.removelast();
+				ltype.addLast("BOOLEEN");
+				loperateur.removeLast();
+				return true;
+			}
+		default:
+			ltype.removeLast();
+			ltype.removeLast();
+			ltype.addLast("ERREUR");
+			loperateur.removeLast();
+			return false;
+		}
+	}
+
+	public void ajoutOp(String op){
+		loperateur.add(op);
+	}
+
+	public void ajoutType(String type){
+		ltype.add(type);	
+	}
+
+	public boolean typage(){
+		if(loperateur.size()>0){
+			op = loperateur.getlast();
+			if(op.equals("neg") || op.equals("non")){
+				boolean a = controleType();
+				boolean b = typage();
+				return ( a && b ); 
+			}
+
+			if(ltype.size()>=2){
+				return controleType();
+			}
+		}else return true;
+		return false;
+	}
+}

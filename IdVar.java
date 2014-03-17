@@ -22,7 +22,6 @@ public class IdVar extends Ident {
 	
 	//Affichage
 	public void show(String s){
-		
 		if(type.equals("BOOLEEN")){
 			Ecriture.ecrireString("VARIABLE | "+ s +" | BOOLEEN | OFFSET ="+offset+"\n");
 		}else if(type.equals("ENTIER")){
@@ -30,7 +29,6 @@ public class IdVar extends Ident {
 		}else{
 			Ecriture.ecrireString("ERREUR SHOW");
 		}
+		
 	}//fin show
 }
-
-
