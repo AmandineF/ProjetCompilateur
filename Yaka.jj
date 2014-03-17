@@ -18,13 +18,11 @@ PARSER_BEGIN(Yaka)
 
 
 public class Yaka {
-  public static TabIdent tabIdent=new TabIdent(30);
-  public static IdConst idConst1;
-  public static IdVar idVar1;
-  public static IdVar idVar2;
-  /*public Declaration declaration;*/
-  /*public Expression expression;*/
-  public static YVM yvm;
+
+  public static Declaration declaration = new Declaration();
+  public static TabIdent tabIdent = new TabIdent(50);
+  /*public static Expression expression = new Expression();*/
+  public static YVM yvm = new YVM();
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -63,8 +61,8 @@ PARSER_END(Yaka)
 /***************************************/
 
 TOKEN_MGR_DECLS :
-{public static String identLu,chaineLue,identAStocker, typeAStocker;
- public static int entierLu, entierAStocker, offset;}
+{public static String identLu,chaineLue;
+ public static int entierLu;}
 
 /*** Skip whitespace and comments ***/
 SKIP :
@@ -143,16 +141,16 @@ TOKEN  :
 /**************************************/
 void prog() : {}
 {
-   <PROGRAMME> <ident>	
+   <PROGRAMME>  <ident> {yvm.entete();}	
    bloc(){tabIdent.show();}
-   <FPROGRAMME> 
+   <FPROGRAMME> {yvm.queue();}
    
 }
 
 void bloc() : {}{
  (declConst())*
  (declVar())*		
-   suiteExpr() 
+   suiteInstr() 
 }
 
 void declConst() : {}
@@ -163,47 +161,40 @@ void declConst() : {}
 void defConst() : {}
 {
 	
-  <ident>  {YakaTokenManager.identAStocker = YakaTokenManager.identLu;}	
-   "=" valConst() 
-   {	   idConst1 = new IdConst(YakaTokenManager.typeAStocker,YakaTokenManager.entierAStocker);	
-   	   tabIdent.rangeIdent(YakaTokenManager.identAStocker, idConst1);
-    }
+  <ident>         {declaration.stockerIdent();}	
+   "=" valConst() {declaration.remplirTableauConst();}
   
 }
 
 void valConst() : {}{
-  <entier> {YakaTokenManager.entierAStocker = YakaTokenManager.entierLu;
- 	    YakaTokenManager.typeAStocker = "entier"; }		
- | <ident> {YakaTokenManager.entierAStocker = tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
- 	    YakaTokenManager.typeAStocker = tabIdent.chercheIdent(YakaTokenManager.identLu).getType();}				
- | <VRAI>  {YakaTokenManager.entierAStocker = -1;
- 	    YakaTokenManager.typeAStocker = "booleen";}				
- | <FAUX>  {YakaTokenManager.entierAStocker = 0;
-            YakaTokenManager.typeAStocker = "booleen";}				
+  <entier> {declaration.stockerEntier(YakaTokenManager.entierLu);
+ 	    declaration.stockerType("entier"); }		
+ | <ident> {declaration.stockerEntier(tabIdent.chercheIdent(YakaTokenManager.identLu).getValue());
+ 	    declaration.stockerType(tabIdent.chercheIdent(YakaTokenManager.identLu).getType());}				
+ | <VRAI>  {declaration.stockerEntier(-1);
+ 	    declaration.stockerType("booleen");}				
+ | <FAUX>  {declaration.stockerEntier(0);
+ 	    declaration.stockerType("booleen");}				
 }
 
 
 void declVar() : {}
 {
-  <VAR> {YakaTokenManager.offset = YakaTokenManager.offset-2;} type() 	
-  <ident> {YakaTokenManager.identAStocker = YakaTokenManager.identLu;
-  	  idVar1 = new IdVar(YakaTokenManager.typeAStocker,YakaTokenManager.offset);
-  	   tabIdent.rangeIdent(YakaTokenManager.identAStocker, idVar1 );
-  	  }				
-  ("," 
-      <ident>  {YakaTokenManager.offset = YakaTokenManager.offset -2;
-      	        YakaTokenManager.identAStocker = YakaTokenManager.identLu;
-      	        idVar2 =  new IdVar(YakaTokenManager.typeAStocker,YakaTokenManager.offset);
-  	   	tabIdent.rangeIdent(YakaTokenManager.identAStocker,idVar2);
-       		}	
+  <VAR>   {declaration.calculerOffset();} type() 	
+  <ident> {declaration.stockerIdent();
+  	   declaration.remplirTableauVar();}				
+  ("," {yvm.incVar();}
+      <ident>  {declaration.calculerOffset();
+      	        declaration.stockerIdent();
+      	        declaration.remplirTableauVar();}	
   )* ";"
-	
+{yvm.ouvrePrinc();}	
 }
 
 void type() :{}
 {
-   <ENTIER> {YakaTokenManager.typeAStocker = "entier";}		
- | <BOOLEEN> {YakaTokenManager.typeAStocker = "booleen";}
+   <ENTIER>  {declaration.stockerType("entier");}		
+ | <BOOLEEN> {declaration.stockerType("booleen");}
 }
 /*
  * Syntaxe des instructions.
@@ -211,7 +202,35 @@ void type() :{}
 void suiteExpr() : {}
 {expression() (";" (expression())? )*}
 
+void suiteInstr() :{}
+{
+        instruction()(";"(instruction())?)*
+}
 
+void instruction() :{}
+{
+        affectation()
+        |lecture()
+        |ecriture()
+}
+
+void affectation() :{}
+{
+        <ident> "=" expression()
+}
+
+void lecture() :{}
+{
+        <LIRE> "(" <ident> {yvm.lireEnt();}")"
+}
+
+void ecriture() :{}
+{
+        (<ECRIRE> "(" 
+        (expression()
+        | <chaine> {yvm.ecrireChaine();}) ")")
+        | <ALALIGNE> {yvm.aLaLigne();}
+}
 
 /*
  * Expression .
@@ -245,18 +264,18 @@ void facteur() : {}
   |  opNeg() primaire() 
 }
 
-void primaire (): {}
+void primaire(): {}
 {
-   valeur()
+   valeur() 
  | "(" expression() ")" 
  
 }
 
-void valeur () : {}
-{ <entier> 		
- | <ident> 		
- | <VRAI> 		
- | <FAUX> 		
+void valeur() : {}
+{ <entier> {yvm.iConst();}		
+ | <ident> {yvm.iLoad();}		
+ | <VRAI> {yvm.iLoad();}		
+ | <FAUX> {yvm.iLoad();}	
  
 }
 
@@ -272,21 +291,21 @@ void opRel() : {}
 
 void opAdd() : {}
 {
-    "+"		
-  |  "-"  
-  | <OU> 	
+    "+"	{yvm.iAdd();}
+  |  "-"  {yvm.iSub();}
+  | <OU> {yvm.iOr();}	
 }
 
 void opMul() : {}
 {
-  "*"		
-  | "/"		
-  | <ET>	
+  "*"	{yvm.iMul();}	
+  | "/"	{yvm.iDiv();}
+  | <ET>{yvm.iAnd();}	
 } 
 
 void opNeg() : {}
-{ "-" 		
- | <NON>	
+{ "-" 	{yvm.oppose();}	
+ | <NON>{yvm.neg();}	
 }
 
 

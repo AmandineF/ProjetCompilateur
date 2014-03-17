@@ -3,8 +3,8 @@
 /** Token Manager. */
 public class YakaTokenManager implements YakaConstants
 {
- public static String identLu,chaineLue,identAStocker, typeAStocker;
- public static int entierLu, entierAStocker, offset;
+ public static String identLu,chaineLue;
+ public static int entierLu;
 
   /** Debug output. */
   public static  java.io.PrintStream debugStream = System.out;

@@ -34,9 +34,9 @@ public class IdConst extends Ident {
 	//Méthodes toString
 	public void show(String s){
 		if(type.equals("boolean")){
-			Ecriture.ecrireString("CONSTANTE | "+ s +" | BOOLEEN | VALEUR ="+value+"\n");
+			Ecriture.ecrireString("CONSTANTE | "+ s +" | BOOLEEN | VALEUR ="+value+ "\n");
 		}else if(type.equals("int")){
-			Ecriture.ecrireString("CONSTANTE | "+ s +" | ENTIER | VALEUR ="+value+"\n");
+			Ecriture.ecrireString("CONSTANTE | "+ s +" | ENTIER | VALEUR ="+value+ "\n");
 		}else{
 			Ecriture.ecrireString("ERREUR SHOW");
 		}
