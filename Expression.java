@@ -82,12 +82,12 @@ public class Expression{
 
 		case "neg":
 			if (!typeB.equals("ENTIER")) {
-				ltype.removelast();
+				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
 				return false;
 			}else {
-				ltype.removelast();
+				ltype.removeLast();
 				ltype.addLast("ENTIER");
 				loperateur.removeLast();
 				return true;
@@ -95,12 +95,12 @@ public class Expression{
 
 		case "non":
 			if (!typeB.equals("BOOLEEN")) {
-				ltype.removelast();
+				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
 				return false;
 			}else {
-				ltype.removelast();
+				ltype.removeLast();
 				ltype.addLast("BOOLEEN");
 				loperateur.removeLast();
 				return true;
@@ -124,7 +124,7 @@ public class Expression{
 
 	public boolean typage(){
 		if(loperateur.size()>0){
-			op = loperateur.getlast();
+			String op = loperateur.getLast();
 			if(op.equals("neg") || op.equals("non")){
 				boolean a = controleType();
 				boolean b = typage();

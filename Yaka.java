@@ -288,7 +288,7 @@ public class Yaka implements YakaConstants {
         break;
       case chaine:
         jj_consume_token(chaine);
-                                               yvm.ecrireChaine();
+                    yvm.ecrireChaine();
         break;
       default:
         jj_la1[11] = jj_gen;
@@ -412,15 +412,19 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case entier:
       jj_consume_token(entier);
+            yvm.iConst();
       break;
     case ident:
       jj_consume_token(ident);
+            yvm.iLoad();
       break;
     case VRAI:
       jj_consume_token(VRAI);
+           yvm.iLoad();
       break;
     case FAUX:
       jj_consume_token(FAUX);
+           yvm.iLoad();
       break;
     default:
       jj_la1[18] = jj_gen;
@@ -460,12 +464,15 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 50:
       jj_consume_token(50);
+         yvm.iAdd();
       break;
     case 51:
       jj_consume_token(51);
+           yvm.iSub();
       break;
     case OU:
       jj_consume_token(OU);
+          yvm.iOr();
       break;
     default:
       jj_la1[20] = jj_gen;
@@ -478,12 +485,15 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 52:
       jj_consume_token(52);
+         yvm.iMul();
       break;
     case 53:
       jj_consume_token(53);
+         yvm.iDiv();
       break;
     case ET:
       jj_consume_token(ET);
+         yvm.iAnd();
       break;
     default:
       jj_la1[21] = jj_gen;
@@ -496,9 +506,11 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 51:
       jj_consume_token(51);
+         yvm.oppose();
       break;
     case NON:
       jj_consume_token(NON);
+         yvm.neg();
       break;
     default:
       jj_la1[22] = jj_gen;

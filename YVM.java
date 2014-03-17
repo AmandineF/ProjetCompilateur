@@ -33,6 +33,15 @@ public class YVM {
         	this.ecrireEnt();
         }
         
+        public void var(){
+        }
+        
+        public void calcul(){
+        }
+        
+        public void ecrireEnt(){
+        }
+        
         public void iConst() {
         }
         
@@ -40,6 +49,9 @@ public class YVM {
         }
         
         public void iAdd() {
+        }
+        
+        public void iDiv() {
         }
         
         public void iSub(){
