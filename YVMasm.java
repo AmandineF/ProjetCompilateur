@@ -26,7 +26,8 @@ public class YVMasm extends YVM {
 
 	public void ecrireChaine() {
 		if (!arret){
-			this.programme+=".DATA\n mess"+cpt+" DB"+'"'+YakaTokenManager.chaineLue+"$"+'"'+"\n";
+			String s = YakaTokenManager.chaineLue.substring(0,YakaTokenManager.chaineLue.length-2);
+			this.programme+=".DATA\n mess"+cpt+" DB "+s+"$"+'"'+"\n";
 			this.programme+=".CODE\n lea dx,mess"+cpt+"\n push dx\n call ecrch\n";
 			cpt++;
 		}
