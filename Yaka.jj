@@ -278,7 +278,7 @@ void primaire(): {}
 }
 
 void valeur() : {}
-{ <entier> {yvm.iConst(); | <ident> {yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}		}		
+{ <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
  | <ident> {yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
  | <VRAI> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	

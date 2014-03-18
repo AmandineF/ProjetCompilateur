@@ -3,7 +3,7 @@ public class Yaka implements YakaConstants {
 
   public static Declaration declaration = new Declaration();
   public static TabIdent tabIdent = new TabIdent(50);
-  public static Expression expression = new Expression();
+  /*public static Expression expression = new Expression();*/
   public static YVM yvm = new YVM();
 
   public static void main(String args[]) {
@@ -20,13 +20,14 @@ public class Yaka implements YakaConstants {
       }
     } else if (args.length==0) {
       try{
-      input = new java.io.FileInputStream("max2.txt");
+      input = new java.io.FileInputStream("essai.txt");
       //System.out.println("Lecture sur l'entree standard...");
       //input = System.in;
       }catch (java.io.FileNotFoundException e) {
               System.out.println("Fichier introuvable -> Lecture sur l'entree standard...");
               input = System.in;
       }
+
     } else {
       System.out.println("Usage: java Gram [fichier]");
       return;
@@ -267,6 +268,7 @@ public class Yaka implements YakaConstants {
     jj_consume_token(ident);
     jj_consume_token(42);
     expression();
+                                  yvm.iStore();
   }
 
   static final public void lecture() throws ParseException {
@@ -351,6 +353,7 @@ public class Yaka implements YakaConstants {
       }
       opAdd();
       terme();
+     yvm.afficherOperateurAdd();
     }
   }
 
@@ -370,6 +373,7 @@ public class Yaka implements YakaConstants {
       }
       opMul();
       facteur();
+    yvm.afficherOperateurMul();
     }
   }
 
@@ -476,15 +480,15 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 50:
       jj_consume_token(50);
-         yvm.iAdd(); expression.ajoutOp("+");
+         yvm.stockerPlus(); expression.ajoutOp("+");
       break;
     case 51:
       jj_consume_token(51);
-           yvm.iSub(); expression.ajoutOp("-");
+          yvm.stockerMoins(); expression.ajoutOp("-");
       break;
     case OU:
       jj_consume_token(OU);
-          yvm.iOr(); expression.ajoutOp("ou");
+          yvm.stockerOu(); expression.ajoutOp("ou");
       break;
     default:
       jj_la1[20] = jj_gen;
@@ -497,15 +501,15 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 52:
       jj_consume_token(52);
-         yvm.iMul(); expression.ajoutOp("*");
+         yvm.stockerMul(); expression.ajoutOp("*");
       break;
     case 53:
       jj_consume_token(53);
-         yvm.iDiv(); expression.ajoutOp("/");
+         yvm.stockerDiv(); expression.ajoutOp("/");
       break;
     case ET:
       jj_consume_token(ET);
-         yvm.iAnd(); expression.ajoutOp("et");
+         yvm.stockerAnd(); expression.ajoutOp("et");
       break;
     default:
       jj_la1[21] = jj_gen;
@@ -518,7 +522,7 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 51:
       jj_consume_token(51);
-         yvm.oppose();expression.ajoutOp("neg");
+         yvm.oppose(); expression.ajoutOp("neg");
       break;
     case NON:
       jj_consume_token(NON);
