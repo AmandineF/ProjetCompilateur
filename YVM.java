@@ -1,8 +1,8 @@
 public class YVM {
-        private String programme;
-        private String operateurAdd, operateurMul, opNeg;
-        private int nbVar=2, store;
-        private boolean arret;
+        protected String programme;
+        protected String operateurAdd, operateurMul, opNeg;
+        protected int nbVar=2, store;
+        protected boolean arret;
         
         public void stop(boolean b){
 		//arret du programme si b = false
@@ -11,15 +11,23 @@ public class YVM {
 			arret = true;
 		}
 	}
+	/* Fonction permetant de gérer la traduction de debut et de fin du progamme*/
         public void entete() {
         	if (!arret){
         		this.programme="entete\n";
                 }
         }
+           
+        public void queue() {
+        	if (!arret){
+			this.programme+="queue\n";
+			System.out.println(this.programme);
+		}
+        }
         
         public void incVar(){
         	if (!arret){
-        		this.nbVar+=2;
+        		this.nbVar+=2;  // On incrémente de 2 la valeur qui s'affiche derrière ouvrePrinc à chaque variable lue
         	}
         }
         
@@ -28,36 +36,7 @@ public class YVM {
         		this.programme+="ouvrePrinc "+this.nbVar+"\n";
         	}
         }
-        
-        public void ecrireChaine() {
-        	if (!arret){
-        		this.programme+="ecrireChaine "+YakaTokenManager.chaineLue+"\n";
-        	} 
-        }
-        
-        public void lireEnt() {
-        	if (!arret){
-        		this.programme+="lireEnt "+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n";
-        	}
-        }
-        
-        public void aLaLigne() {
-        	if (!arret){
-        		this.programme+="aLaLigne\n";
-        	}
-        }
-                   
-        public void iConst() {
-        	if (!arret){
-        		this.programme+="iconst "+YakaTokenManager.entierLu+"\n";
-       		}
-        }
-        
-        public void iLoad(){
-        	if (!arret){
-        		this.programme+="iload " + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "\n";
-        	}
-        }
+        /* Fonction permettant de stocker les informations lues et traduite plus tard */
         
         public void stockerPlus() {
         	if (!arret){
@@ -76,12 +55,7 @@ public class YVM {
         	}
         }
         
-        public void afficherOperateurAdd(){
-        	if (!arret){
-        		this.programme+=this.operateurAdd + "\n";
-        	}
-        }
-         public void stockerDiv() {
+        public void stockerDiv() {
          	 if (!arret){
          	 	 this.operateurMul= "idiv";
          	 }
@@ -99,6 +73,65 @@ public class YVM {
         	}
         }
         
+        public void stockerOppose(){
+        	this.opNeg="ineg";
+        }
+        
+        public void stockerNeg() {
+        	this.opNeg="inot";
+        }
+        
+         public void offsetStore() {
+        	this.store=Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
+        	// Pour l'affectation, on cherche l'offset de la variable affectée qu'on affichera plus tard 
+        }
+        
+        /* Traduction imédiate */
+        
+        public void ecrireEnt(){
+        	this.programme+="ecrireEnt\n";
+        }
+        
+        public void ecrireChaine() {
+        	if (!arret){
+        		this.programme+="ecrireChaine "+YakaTokenManager.chaineLue+"\n";
+        	} 
+        }
+        
+        public void lireEnt() {
+        	if (!arret){
+        		this.programme+="lireEnt "+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n";
+        		// On récupère l'offset de la variable à lire
+        	}
+        }
+        
+        public void aLaLigne() {
+        	if (!arret){
+        		this.programme+="aLaLigne\n";
+        	}
+        }
+               
+        public void iConst() {
+        	if (!arret){
+        		this.programme+="iconst "+YakaTokenManager.entierLu+"\n";
+       		}
+        }
+        
+        public void iLoad(){
+        	if (!arret){
+        		this.programme+="iload " + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "\n";
+        	}
+        }
+        
+        /* Réutilisation des éléments stockés */
+        
+        public void afficherOperateurAdd(){
+        	if (!arret){
+        		this.programme+=this.operateurAdd + "\n";
+        	}
+        }
+         
+        
         public void afficherOperateurMul(){
         	if (!arret){
         		this.programme+=this.operateurMul+ "\n";
@@ -110,30 +143,10 @@ public class YVM {
         	}
         }
         
-        public void offsetStore() {
-        	this.store=Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();	
-        }
-        public void ecrireEnt(){
-        	this.programme+="ecrireEnt\n";
-        }
-        
-        public void stockerOppose(){
-        	this.opNeg="ineg";
-        }
-        
-        public void stockerNeg() {
-        	this.opNeg="inot";
-        }
-        
         public void afficherNeg() {
         	this.programme+=this.opNeg+"\n";
         }
         
-        public void queue() {
-        	if (!arret){
-			this.programme+="queue\n";
-			System.out.println(this.programme);
-		}
-        }
+     
        
 }
