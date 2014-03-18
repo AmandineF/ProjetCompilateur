@@ -266,16 +266,17 @@ public class Yaka implements YakaConstants {
 
   static final public void affectation() throws ParseException {
     jj_consume_token(ident);
+                 declaration.stockerIdent(); yvm.offsetStore();
     jj_consume_token(42);
     expression();
-                                  yvm.iStore();
+                                                                                   yvm.iStore();
   }
 
   static final public void lecture() throws ParseException {
     jj_consume_token(LIRE);
     jj_consume_token(43);
     jj_consume_token(ident);
-                            yvm.lireEnt();
+                            declaration.stockerIdent(); yvm.lireEnt();
     jj_consume_token(44);
   }
 
@@ -293,6 +294,7 @@ public class Yaka implements YakaConstants {
       case 43:
       case 51:
         expression();
+                       yvm.ecrireEnt();
         break;
       case chaine:
         jj_consume_token(chaine);

@@ -223,18 +223,18 @@ void instruction() :{}
 
 void affectation() :{}
 {
-        <ident> "=" expression() {yvm.iStore();}
+        <ident> {declaration.stockerIdent(); yvm.offsetStore();} "=" expression() {yvm.iStore();}
 }
 
 void lecture() :{}
 {
-        <LIRE> "(" <ident> {yvm.lireEnt();}")"
+        <LIRE> "(" <ident> {declaration.stockerIdent(); yvm.lireEnt();}")"
 }
 
 void ecriture() :{}
 {
         (<ECRIRE> "(" 
-        (expression() 
+        (expression() {yvm.ecrireEnt();}
         | <chaine> {yvm.ecrireChaine();}) ")")
         | <ALALIGNE> {yvm.aLaLigne();}
 }

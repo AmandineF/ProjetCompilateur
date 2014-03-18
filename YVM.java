@@ -1,7 +1,7 @@
 public class YVM {
         private String programme;
         private String operateurAdd, operateurMul;
-        private int nbVar=2;
+        private int nbVar=2, store;
         private boolean arret;
         
           public void stop(boolean b){
@@ -49,13 +49,13 @@ public class YVM {
                    
         public void iConst() {
         	if (!arret){
-       		this.programme+="iconst\n";
+       		this.programme+="iconst "+YakaTokenManager.entierLu+"\n";
         }
         }
         
         public void iLoad(){
         if (!arret){
-        	this.programme+="iload\n";
+        	this.programme+="iload " + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "\n";
         }
         }
         
@@ -106,10 +106,17 @@ public class YVM {
         }
         public void iStore(){
         if (!arret){
-        	this.programme+="istore";
+        	this.programme+="istore " + this.store + "\n";
         }
         }
         
+        public void offsetStore() {
+        	this.store=Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
+        	
+        }
+        public void ecrireEnt(){
+        	this.programme+="ecrireEnt\n";
+        }
         public void oppose(){
         }
         
