@@ -1,4 +1,3 @@
-import biblio.obj;
 
 public class YVMasm extends YVM {
 	int cpt = 0;
@@ -8,7 +7,7 @@ public class YVMasm extends YVM {
 
 	public void entete() {
 		if (!arret){
-			this.programme="extrn lirent:proc, ecrent:proc\n extrn ecrbool:proc\n extrn ecrch:proc, ligsuiv:proc\n .model SMALL\n .586\n .CODE\n debut :\n STARTUPCODE";	
+			this.programme="extrn lirent:proc, ecrent:proc\n extrn ecrbool:proc\n extrn ecrch:proc, ligsuiv:proc\n .model SMALL\n .586\n .CODE\n debut :\n STARTUPCODE\n";	
 		}
 	}
 
@@ -27,7 +26,7 @@ public class YVMasm extends YVM {
 
 	public void ecrireChaine() {
 		if (!arret){
-			this.programme+=".DATA\n mess"+cpt+" DB \""+YakaTokenManager.chaineLue+"$\"\n";
+			this.programme+=".DATA\n mess"+cpt+" DB"+'"'+YakaTokenManager.chaineLue+"$"+'"'+"\n";
 			this.programme+=".CODE\n lea dx,mess"+cpt+"\n push dx\n call ecrch\n";
 			cpt++;
 		}
@@ -76,11 +75,12 @@ public class YVMasm extends YVM {
 
 	public void afficherOperateurAdd(){
 		if (!arret){
-			switch(this.operateurAdd)
+			switch(this.operateurAdd){
 		case "iadd": this.programme+="pop bx\n pop ax\n add ax,bx\n push ax\n"; break;
 		case "isub": this.programme+="pop bx\n pop ax\n sub ax,bx\n push ax\n"; break;
 		case "ior" : this.programme+="pop ax \n pop bx or ax,bx \n push ax\n"; break;
 		default : this.programme+="ERREUR YVMasm";
+		}
 		}
 	}
 	public void stockerDiv() {
@@ -135,9 +135,10 @@ public class YVMasm extends YVM {
 	}
 	
 	public void afficherNeg() {
-		switch(this.opNeg)
-		case "ineg": this.programme+="pop ax not ax \n push ax\n"; break;
-		case "inot": this.programme+="pop ax\n mov bx,-1 \n imul bx \n push ax"; break;
+		switch(this.opNeg){
+		case "ineg": this.programme+="pop ax\n not ax \n push ax\n"; break;
+		case "inot": this.programme+="pop ax\n mov bx,-1 \n imul bx \n push ax\n"; break;
+	}
 	}
 
 
