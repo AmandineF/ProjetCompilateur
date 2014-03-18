@@ -21,7 +21,7 @@ public class Yaka {
 
   public static Declaration declaration = new Declaration();
   public static TabIdent tabIdent = new TabIdent(50);
-  public static Expression expression = new Expression();
+  /*public static Expression expression = new Expression();*/
   public static YVM yvm = new YVM();
 
   public static void main(String args[]) { 
@@ -38,13 +38,14 @@ public class Yaka {
       }
     } else if (args.length==0) {
       try{
-      input = new java.io.FileInputStream("max.txt");
+      input = new java.io.FileInputStream("essai.txt");
       //System.out.println("Lecture sur l'entree standard...");
       //input = System.in;
       }catch (java.io.FileNotFoundException e) {
       	      System.out.println("Fichier introuvable -> Lecture sur l'entree standard...");
       	      input = System.in;
       }
+
     } else {
       System.out.println("Usage: java Gram [fichier]");
       return;
@@ -222,7 +223,7 @@ void instruction() :{}
 
 void affectation() :{}
 {
-        <ident> "=" expression()
+        <ident> "=" expression() {yvm.iStore();}
 }
 
 void lecture() :{}
@@ -233,7 +234,7 @@ void lecture() :{}
 void ecriture() :{}
 {
         (<ECRIRE> "(" 
-        (expression()
+        (expression() 
         | <chaine> {yvm.ecrireChaine();}) ")")
         | <ALALIGNE> {yvm.aLaLigne();}
 }
@@ -250,20 +251,19 @@ void expression() : {}
 }
 
 
-
 void simpleExpr() : {}
 {
    terme() 
-   (opAdd() 
+   ((opAdd()
    terme()	
-   )*
+   ){yvm.afficherOperateurAdd();})* 
 } 
 void terme() : {}
 {
   facteur() 
-  (opMul() 
+  ((opMul()
   facteur()	
-  )*
+  ){yvm.afficherOperateurMul();})*
 }
 void facteur() : {}
 {   primaire() 
@@ -278,8 +278,8 @@ void primaire(): {}
 }
 
 void valeur() : {}
-{ <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident> {yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}		
+{ <entier> {yvm.iConst(); | <ident> {yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}		}		
+ | <ident> {yvm.iLoad();  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
  | <VRAI> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iLoad(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  
@@ -293,24 +293,25 @@ void opRel() : {}
  | "<=" {expression.ajoutOp("<=");} 	
  | ">" 	{expression.ajoutOp(">");} 	
  | ">=" {expression.ajoutOp(">=");} 	
+ 	
 } 
 
 void opAdd() : {}
 {
-    "+"	{yvm.iAdd(); expression.ajoutOp("+");}
-  |  "-"  {yvm.iSub(); expression.ajoutOp("-");}
-  | <OU> {yvm.iOr(); expression.ajoutOp("ou");}	
+    "+"	{yvm.stockerPlus(); expression.ajoutOp("+");}
+  |  "-" {yvm.stockerMoins(); expression.ajoutOp("-");}
+  | <OU> {yvm.stockerOu(); expression.ajoutOp("ou");}	
 }
 
 void opMul() : {}
 {
-  "*"	{yvm.iMul(); expression.ajoutOp("*");}	
-  | "/"	{yvm.iDiv(); expression.ajoutOp("/");}
-  | <ET>{yvm.iAnd(); expression.ajoutOp("et");}	
+  "*"	{yvm.stockerMul(); expression.ajoutOp("*");}	
+  | "/"	{yvm.stockerDiv(); expression.ajoutOp("/");}
+  | <ET>{yvm.stockerAnd(); expression.ajoutOp("et");}
 } 
 
 void opNeg() : {}
-{ "-" 	{yvm.oppose();expression.ajoutOp("neg");}	
+{ "-" 	{yvm.oppose(); expression.ajoutOp("neg");}	
  | <NON>{yvm.neg(); expression.ajoutOp("non");}	
 }
 
