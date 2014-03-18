@@ -34,7 +34,7 @@ public class YVMasm extends YVM {
 
 	public void lireEnt() {
 		if (!arret){
-			this.programme+="lea dx,[bp+"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n push dx\n call lirent\n";
+			this.programme+="lea dx,[bp"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\n push dx\n call lirent\n";
 		}
 	}
 
@@ -52,7 +52,7 @@ public class YVMasm extends YVM {
 
 	public void iLoad(){
 		if (!arret){
-			this.programme+="push word ptr [bp+" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
+			this.programme+="push word ptr [bp" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
 		}
 	}
 
@@ -113,7 +113,7 @@ public class YVMasm extends YVM {
 	}
 	public void iStore(){
 		if (!arret){
-			this.programme+="pop ax\n mov word ptr [bp+" + this.store + "]\n";
+			this.programme+="pop ax\n mov word ptr [bp+" + this.store + "],ax\n";
 		}
 	}
 

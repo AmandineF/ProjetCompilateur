@@ -4,7 +4,7 @@ public class Yaka implements YakaConstants {
   public static Declaration declaration = new Declaration();
   public static TabIdent tabIdent = new TabIdent(50);
   public static Expression expression = new Expression();
-  public static YVM yvm = new YVM();
+  public static YVM yvm = new YVMasm();
 
   public static void main(String args[]) {
     Yaka analyseur;
@@ -13,7 +13,7 @@ public class Yaka implements YakaConstants {
     if (args.length==1) {
       System.out.print(args[args.length-1] + ": ");
       try {
-        input = new java.io.FileInputStream(args[args.length-1]+".txt");
+        input = new java.io.FileInputStream(args[args.length-1]+".yaka");
       } catch (java.io.FileNotFoundException e) {
         System.out.println("Fichier introuvable.");
         return;
