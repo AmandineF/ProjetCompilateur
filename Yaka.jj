@@ -267,7 +267,7 @@ void terme() : {}
 }
 void facteur() : {}
 {   primaire() 
-  |  opNeg() primaire() 
+  |  opNeg() primaire() {yvm.afficherNeg();}
 }
 
 void primaire(): {}
@@ -311,8 +311,8 @@ void opMul() : {}
 } 
 
 void opNeg() : {}
-{ "-" 	{yvm.oppose(); expression.ajoutOp("neg");}	
- | <NON>{yvm.neg(); expression.ajoutOp("non");}	
+{ "-" 	{yvm.stockerOppose(); expression.ajoutOp("neg");}	
+ | <NON>{yvm.stockerNeg(); expression.ajoutOp("non");}	
 }
 
 

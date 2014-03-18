@@ -392,6 +392,7 @@ public class Yaka implements YakaConstants {
     case 51:
       opNeg();
       primaire();
+                         yvm.afficherNeg();
       break;
     default:
       jj_la1[16] = jj_gen;
@@ -524,11 +525,11 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 51:
       jj_consume_token(51);
-         yvm.oppose(); expression.ajoutOp("neg");
+         yvm.stockerOppose(); expression.ajoutOp("neg");
       break;
     case NON:
       jj_consume_token(NON);
-         yvm.neg(); expression.ajoutOp("non");
+         yvm.stockerNeg(); expression.ajoutOp("non");
       break;
     default:
       jj_la1[22] = jj_gen;

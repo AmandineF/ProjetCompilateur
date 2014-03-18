@@ -10,4 +10,6 @@ ECRIRE("x+y=");
 ECRIRE(x+y);
 ALALIGNE;
 z=(x+y/2)/5;
+x=y+3*y-4;
+y=-2;
 FPROGRAMME
