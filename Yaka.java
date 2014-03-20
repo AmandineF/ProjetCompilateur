@@ -51,7 +51,7 @@ public class Yaka implements YakaConstants {
     jj_consume_token(ident);
                          yvm.entete();
     bloc();
-          tabIdent.show();
+
     jj_consume_token(FPROGRAMME);
                  yvm.queue();
   }

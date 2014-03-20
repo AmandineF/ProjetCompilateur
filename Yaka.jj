@@ -149,7 +149,7 @@ TOKEN  :
 void prog() : {}
 {
    <PROGRAMME>  <ident> {yvm.entete();}	
-   bloc(){tabIdent.show();}
+   bloc(){/*tabIdent.show();*/}
    <FPROGRAMME> {yvm.queue();}
    
 }

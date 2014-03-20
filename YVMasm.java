@@ -26,7 +26,7 @@ public class YVMasm extends YVM {
 
 	public void ecrireChaine() {
 		if (!arret){
-			String s = YakaTokenManager.chaineLue.substring(0,YakaTokenManager.chaineLue.length-2);
+			String s = YakaTokenManager.chaineLue.substring(0,YakaTokenManager.chaineLue.length()-1);
 			this.programme+=".DATA\n mess"+cpt+" DB "+s+"$"+'"'+"\n";
 			this.programme+=".CODE\n lea dx,mess"+cpt+"\n push dx\n call ecrch\n";
 			cpt++;
@@ -35,7 +35,11 @@ public class YVMasm extends YVM {
 
 	public void lireEnt() {
 		if (!arret){
-			this.programme+="lea dx,[bp"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\n push dx\n call lirent\n";
+			if(Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()<0){
+				this.programme+="lea dx,[bp"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\n push dx\n call lirent\n";
+			}else{
+				this.programme+="lea dx,[bp+"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\n push dx\n call lirent\n";
+			}
 		}
 	}
 
@@ -53,7 +57,11 @@ public class YVMasm extends YVM {
 
 	public void iLoad(){
 		if (!arret){
-			this.programme+="push word ptr [bp" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
+			if(Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()<0){
+				this.programme+="push word ptr [bp" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
+			}else{
+				this.programme+="push word ptr [bp+" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
+			}
 		}
 	}
 
@@ -114,7 +122,11 @@ public class YVMasm extends YVM {
 	}
 	public void iStore(){
 		if (!arret){
-			this.programme+="pop ax\n mov word ptr [bp+" + this.store + "],ax\n";
+			if(this.store<0){
+				this.programme+="pop ax\n mov word ptr [bp" + this.store + "],ax\n";
+			}else{
+				this.programme+="pop ax\n mov word ptr [bp+" + this.store + "],ax\n";
+			}
 		}
 	}
 
