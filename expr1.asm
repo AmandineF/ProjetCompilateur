@@ -1,52 +1,93 @@
-
 extrn lirent:proc, ecrent:proc
- extrn ecrbool:proc
- extrn ecrch:proc, ligsuiv:proc
- .model SMALL
- .586
- .CODE
+extrn ecrbool:proc
+extrn ecrch:proc, ligsuiv:proc
+.model SMALL
+.586
+.CODE
  debut :
- STARTUPCODE
+STARTUPCODE
+
+;ouvrePrinc
 mov bp,sp
- sub sp,10
-push word ptr [bp-2]
+sub sp,10
+
+;iConst
 push word ptr 2
+
+;iConst
+push word ptr 2
+
+;iConst
 push word ptr 3
+
+;imul
 pop bx
- pop ax
- imul bx
- push ax
-pop bx
- pop ax
- add ax,bx
- push ax
 pop ax
- mov word ptr [bp-10],ax
+imul bx
+push ax
+
+;iadd
+pop bx
+pop ax
+add ax,bx
+push ax
+
+;iStore
+pop ax
+mov word ptr [bp-10],ax
+
+;iLoad
 push word ptr [bp-10]
+
+;ecrireEnt
 call ecrent
+
+;aLaLigne
 call ligsuiv
-push word ptr [bp-2]
+
+;iConst
+push word ptr 3
+
+;iConst
 push word ptr 2
+
+;iConst
 push word ptr 2
+
+;iConst
 push word ptr 1
+
+;iadd
 pop bx
- pop ax
- add ax,bx
- push ax
-push word ptr [bp-2]
+pop ax
+add ax,bx
+push ax
+
+;iConst
+push word ptr 1
+
+;iadd
 pop bx
- pop ax
- add ax,bx
- push ax
+pop ax
+add ax,bx
+push ax
+
+;imul
 pop bx
- pop ax
- imul bx
- push ax
+pop ax
+imul bx
+push ax
+
+;iadd
 pop bx
- pop ax
- add ax,bx
- push ax
+pop ax
+add ax,bx
+push ax
+
+;ecrireEnt
 call ecrent
+
+;queue
 nop
- EXITCODE
- End debut
+EXITCODE
+End debut

@@ -1,0 +1,114 @@
+Turbo Assembler	 Version 4.1	    03/21/14 11:33:19	    Page 1
+expr1.ASM
+
+
+
+      1					 extrn lirent:proc, ecrent:proc
+      2					 extrn ecrbool:proc
+      3					 extrn ecrch:proc, ligsuiv:proc
+      4	    0000			 .model	SMALL
+      5					 .586
+      6	    0000			 .CODE
+      7	    0000			  debut	:
+      8					 STARTUPCODE
+1     9	    0000			 @Startup:
+1    10	    0000  BA 0000s			 MOV	 DX,@data
+1    11	    0003  8E DA				 MOV	 DS,DX
+1    12	    0005  8C D3				 MOV	 BX,SS
+1    13	    0007  2B DA				 SUB	 BX,DX
+1    14	    0009  C1 E3	04			 SHL	 BX,4
+1    15	    000C  8E D2				 MOV	 SS,DX
+1    16	    000E  03 E3				 ADD	 SP,BX
+     17
+     18					 ;ouvrePrinc
+     19	    0010  8B EC			 mov bp,sp
+     20	    0012  83 EC	0A		 sub sp,10
+     21
+     22					 ;iConst
+     23	    0015  6A 02			 push word ptr 2
+     24
+     25					 ;iConst
+     26	    0017  6A 02			 push word ptr 2
+     27
+     28					 ;iConst
+     29	    0019  6A 03			 push word ptr 3
+     30
+     31					 ;imul
+     32	    001B  5B			 pop bx
+     33	    001C  58			 pop ax
+     34	    001D  F7 EB			 imul bx
+     35	    001F  50			 push ax
+     36
+     37					 ;iadd
+     38	    0020  5B			 pop bx
+     39	    0021  58			 pop ax
+     40	    0022  03 C3			 add ax,bx
+     41	    0024  50			 push ax
+     42
+     43					 ;iStore
+     44	    0025  58			 pop ax
+     45	    0026  89 46	F6		 mov word ptr [bp-10],ax
+     46
+     47					 ;iLoad
+     48	    0029  FF 76	F6		 push word ptr [bp-10]
+     49
+     50					 ;ecrireEnt
+     51	    002C  E8 0000e		 call ecrent
+     52
+     53					 ;aLaLigne
+     54	    002F  E8 0000e		 call ligsuiv
+     55
+     56					 ;iConst
+     57	    0032  6A 03			 push word ptr 3
+Turbo Assembler	 Version 4.1	    03/21/14 11:33:19	    Page 2
+expr1.ASM
+
+
+
+     58
+     59					 ;iConst
+     60	    0034  6A 02			 push word ptr 2
+     61
+     62					 ;iConst
+     63	    0036  6A 02			 push word ptr 2
+     64
+     65					 ;iConst
+     66	    0038  6A 01			 push word ptr 1
+     67
+     68					 ;iadd
+     69	    003A  5B			 pop bx
+     70	    003B  58			 pop ax
+     71	    003C  03 C3			 add ax,bx
+     72	    003E  50			 push ax
+     73
+     74					 ;iConst
+     75	    003F  6A 01			 push word ptr 1
+     76
+     77					 ;iadd
+     78	    0041  5B			 pop bx
+     79	    0042  58			 pop ax
+     80	    0043  03 C3			 add ax,bx
+     81	    0045  50			 push ax
+     82
+     83					 ;imul
+     84	    0046  5B			 pop bx
+     85	    0047  58			 pop ax
+     86	    0048  F7 EB			 imul bx
+     87	    004A  50			 push ax
+     88
+     89					 ;iadd
+     90	    004B  5B			 pop bx
+     91	    004C  58			 pop ax
+     92	    004D  03 C3			 add ax,bx
+     93	    004F  50			 push ax
+     94
+     95					 ;ecrireEnt
+     96	    0050  E8 0000e		 call ecrent
+     97
+     98					 ;queue
+     99	    0053  90			 nop
+    100					 EXITCODE
+1   101	    0054  B4 4C				 MOV	 AH,4Ch
+1   102	    0056  CD 21				 INT	 21h
+    103					 End debut
+

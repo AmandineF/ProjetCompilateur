@@ -3,6 +3,7 @@ public class YVM {
         protected String operateurAdd, operateurMul, opNeg;
         protected int nbVar=2, store;
         protected boolean arret;
+
         
         public void stop(boolean b){
 		//arret du programme si b = false
@@ -21,7 +22,7 @@ public class YVM {
         public void queue() {
         	if (!arret){
 			this.programme+="queue\n";
-			System.out.println(this.programme);
+			//Ecriture.ecrireString(this.programme);
 		}
         }
         
@@ -122,6 +123,11 @@ public class YVM {
         		this.programme+="iload " + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "\n";
         	}
         }
+        public void charger(Ident i){
+        	if (i instanceof IdVar){
+        		iLoad();
+        	}else {iConst();}
+        }
         
         /* Réutilisation des éléments stockés */
         
@@ -147,6 +153,9 @@ public class YVM {
         	this.programme+=this.opNeg+"\n";
         }
         
+        public String genere(){
+        	return programme;
+        }
      
        
 }

@@ -1,13 +1,16 @@
 
 public class YVMasm extends YVM {
 	int cpt = 0;
+	
+	
 	public YVMasm() {
 
 	}
 
 	public void entete() {
+		this.programme += ";entete\n";
 		if (!arret){
-			this.programme="extrn lirent:proc, ecrent:proc\n extrn ecrbool:proc\n extrn ecrch:proc, ligsuiv:proc\n .model SMALL\n .586\n .CODE\n debut :\n STARTUPCODE\n";	
+			this.programme="extrn lirent:proc, ecrent:proc\nextrn ecrbool:proc\nextrn ecrch:proc, ligsuiv:proc\n.model SMALL\n.586\n.CODE\n debut :\nSTARTUPCODE\n\n";	
 		}
 	}
 
@@ -19,48 +22,54 @@ public class YVMasm extends YVM {
 	}
 
 	public void ouvrePrinc() {
+		this.programme += ";ouvrePrinc\n";
 		if (!arret){
-			this.programme+="mov bp,sp\n sub sp,"+this.nbVar+"\n";
+			this.programme+="mov bp,sp\nsub sp,"+this.nbVar+"\n\n";
 		}
 	}
 
 	public void ecrireChaine() {
+		this.programme += ";ecrireChaine\n";
 		if (!arret){
 			String s = YakaTokenManager.chaineLue.substring(0,YakaTokenManager.chaineLue.length()-1);
-			this.programme+=".DATA\n mess"+cpt+" DB "+s+"$"+'"'+"\n";
-			this.programme+=".CODE\n lea dx,mess"+cpt+"\n push dx\n call ecrch\n";
+			this.programme+=".DATA\nmess"+cpt+" DB "+s+"$"+'"'+"\n";
+			this.programme+=".CODE\nlea dx,mess"+cpt+"\npush dx\ncall ecrch\n\n";
 			cpt++;
 		}
 	}
 
 	public void lireEnt() {
+		this.programme += ";lireEnt\n";
 		if (!arret){
 			if(Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()<0){
-				this.programme+="lea dx,[bp"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\n push dx\n call lirent\n";
+				this.programme+="lea dx,[bp"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\npush dx\ncall lirent\n\n";
 			}else{
-				this.programme+="lea dx,[bp+"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\n push dx\n call lirent\n";
+				this.programme+="lea dx,[bp+"+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"]\npush dx\ncall lirent\n\n";
 			}
 		}
 	}
 
 	public void aLaLigne() {
+		this.programme += ";aLaLigne\n";
 		if (!arret){
-			this.programme+="call ligsuiv\n";
+			this.programme+="call ligsuiv\n\n";
 		}
 	}
 
 	public void iConst() {
+		this.programme += ";iConst\n";
 		if (!arret){
-			this.programme+="push word ptr "+YakaTokenManager.entierLu+"\n";
+			this.programme+="push word ptr "+YakaTokenManager.entierLu+"\n\n";
 		}
 	}
 
 	public void iLoad(){
+		this.programme += ";iLoad\n";
 		if (!arret){
 			if(Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()<0){
-				this.programme+="push word ptr [bp" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
+				this.programme+="push word ptr [bp" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n\n";
 			}else{
-				this.programme+="push word ptr [bp+" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n";
+				this.programme+="push word ptr [bp+" + Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue() + "]\n\n";
 			}
 		}
 	}
@@ -85,10 +94,10 @@ public class YVMasm extends YVM {
 	public void afficherOperateurAdd(){
 		if (!arret){
 			switch(this.operateurAdd){
-		case "iadd": this.programme+="pop bx\n pop ax\n add ax,bx\n push ax\n"; break;
-		case "isub": this.programme+="pop bx\n pop ax\n sub ax,bx\n push ax\n"; break;
-		case "ior" : this.programme+="pop ax \n pop bx or ax,bx \n push ax\n"; break;
-		default : this.programme+="ERREUR YVMasm";
+		case "iadd": this.programme+=";iadd\npop bx\npop ax\nadd ax,bx\npush ax\n\n"; break;
+		case "isub": this.programme+=";isub\npop bx\npop ax\nsub ax,bx\npush ax\n\n"; break;
+		case "ior" : this.programme+=";ior\npop ax \npop bx or ax,bx \npush ax\n\n"; break;
+		default : this.programme+="ERREUR YVMasm\n";
 		}
 		}
 	}
@@ -113,19 +122,20 @@ public class YVMasm extends YVM {
 	public void afficherOperateurMul(){
 		if (!arret){
 			switch(this.operateurMul){
-			case "idiv": this.programme+="pop bx\n pop ax\n cwd\n idiv bx\n push ax\n"; break;
-			case "imul": this.programme+="pop bx\n pop ax\n imul bx\n push ax\n"; break;
-			case "iand": this.programme+="pop ax \n pop bx \n and ax,bx  \n push ax \n"; break;
+			case "idiv": this.programme+=";idiv\npop bx\npop ax\ncwd\n idiv bx\npush ax\n\n"; break;
+			case "imul": this.programme+=";imul\npop bx\npop ax\nimul bx\npush ax\n\n"; break;
+			case "iand": this.programme+=";iand\npop ax \npop bx \nand ax,bx  \npush ax \n\n"; break;
 			default : this.programme+="ERREUR YVMasm";
 			}
 		}
 	}
 	public void iStore(){
+		this.programme += ";iStore\n";
 		if (!arret){
 			if(this.store<0){
-				this.programme+="pop ax\n mov word ptr [bp" + this.store + "],ax\n";
+				this.programme+="pop ax\nmov word ptr [bp" + this.store + "],ax\n\n";
 			}else{
-				this.programme+="pop ax\n mov word ptr [bp+" + this.store + "],ax\n";
+				this.programme+="pop ax\nmov word ptr [bp+" + this.store + "],ax\n\n";
 			}
 		}
 	}
@@ -136,7 +146,8 @@ public class YVMasm extends YVM {
 	}
 
 	public void ecrireEnt(){
-		this.programme+="call ecrent\n";
+		this.programme += ";ecrireEnt\n";
+		this.programme+="call ecrent\n\n";
 	}
 
 	public void stockerOppose(){
@@ -149,16 +160,17 @@ public class YVMasm extends YVM {
 	
 	public void afficherNeg() {
 		switch(this.opNeg){
-		case "ineg": this.programme+="pop ax\n not ax \n push ax\n"; break;
-		case "inot": this.programme+="pop ax\n mov bx,-1 \n imul bx \n push ax\n"; break;
+		case "ineg": this.programme+=";ineg\npop ax\nnot ax \npush ax\n\n"; break;
+		case "inot": this.programme+=";inot\npop ax\nmov bx,-1 \nimul bx \n push ax\n\n"; break;
 	}
 	}
 
 
 	public void queue() {
+		this.programme += ";queue\n";
 		if (!arret){
-			this.programme+="nop\n EXITCODE\n End debut\n";
-			System.out.println(this.programme);
+			this.programme+="nop\nEXITCODE\nEnd debut\n";
+			//Ecriture.ecrireString(this.programme);
 		}
 	}
 
