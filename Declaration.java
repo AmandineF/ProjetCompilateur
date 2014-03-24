@@ -4,6 +4,7 @@ public class Declaration{
 	
 	private static String identAStocker;
 	private static String typeAStocker;
+	private static String[] typeParam= new String[10];
         private static int entierAStocker;
         private static int offset;
         
@@ -37,5 +38,9 @@ public class Declaration{
         	IdConst idConst = new IdConst(this.typeAStocker,this.entierAStocker);	
    	        Yaka.tabIdent.rangeIdent(this.identAStocker, idConst);
   	}
-	
+  	
+  	public void remplirTableauGlobaux(){
+  		IdFonction idFonction = new IdFonction(this.typeAStocker,this.typeParam);
+  		Yaka.tabIdent.rangeIdentGlobaux(this.identAStocker, idFonction);
+	}
 }

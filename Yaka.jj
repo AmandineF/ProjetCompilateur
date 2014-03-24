@@ -166,8 +166,8 @@ void prog() : {}
 
 void declFonction() : {}{
 type() 
-<FONCTION> <ident> 
-paramForms()
+<FONCTION> <ident> {declaration.stockerIdent();}	
+paramForms() {declaration.remplirTableauGlobaux();}
 bloc()
 <FFONCTION>
 }
@@ -176,7 +176,7 @@ void paramForms() : {}{
 ((paramForm()("," paramForm())*)?)
 }
 void paramForm() : {}{
-type() <ident>
+type() {tabIdent.stockerTypeParam();} <ident>
 }
 void bloc() : {}{
  (declConst())*
