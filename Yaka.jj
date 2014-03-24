@@ -156,11 +156,28 @@ TOKEN  :
 void prog() : {}
 {
    <PROGRAMME>  <ident> {yvm.entete();}	
+   (declFonction())* /*Nouveau*/
+   <PRINCIPAL> /*Nouveau*/
    bloc(){/*tabIdent.show();*/}
+   <FPRINCIPAL>  /*Nouveau*/
    <FPROGRAMME> {yvm.queue();}
    
 }
 
+void declFonction() : {}{
+type() 
+<FONCTION> <ident> 
+paramForms()
+bloc()
+<FFONCTION>
+}
+
+void paramForms() : {}{
+((paramForm()("," paramForm())*)?)
+}
+void paramForm() : {}{
+type() <ident>
+}
 void bloc() : {}{
  (declConst())*
  (declVar())*		
@@ -228,6 +245,7 @@ void instruction() :{}
         |ecriture()
         |iteration()
         |conditionnelle()
+        |retourne()
 }
 
 void affectation() :{}
@@ -288,7 +306,7 @@ void primaire(): {}
 
 void valeur() : {}
 { <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident> {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
+ | <ident> (argumentsFonction())? {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
  | <VRAI> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  
@@ -328,22 +346,31 @@ void opNeg() : {}
 
 void iteration() : {}
 {
-<TANTQUE> {yvm.faire();}
-expression() {yvm.iter();}
-<FAIRE> 
-suiteInstr()
-<FAIT> {yvm.fait();}
+	<TANTQUE> {yvm.faire();}
+	expression() {yvm.iter();}
+	<FAIRE> 
+	suiteInstr()
+	<FAIT> {yvm.fait();}
 }
 
 /*Conditionnelle*/
 void conditionnelle() : {}
 {
-<SI> {yvm.numCond();}
-expression() {yvm.cond();}
-<ALORS>
-instruction() {yvm.sinon();}
-(<SINON>
-instruction())?
-<FSI> {yvm.fsi();}
+	<SI> {yvm.numCond();}
+	expression() {yvm.cond();}
+	<ALORS>
+	instruction() {yvm.sinon();}
+	(<SINON>
+	instruction())?
+	<FSI> {yvm.fsi();}
 }
 
+/*Fonctions*/
+void retourne() : {} {
+	<RETOURNE> 
+	expression()
+}
+
+void argumentsFonction() : {} {
+	((expression() ("," expression()*)?)
+}
