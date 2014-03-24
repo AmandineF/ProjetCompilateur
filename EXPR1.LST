@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/21/14 11:33:19	    Page 1
+Turbo Assembler	 Version 4.1	    03/21/14 12:51:19	    Page 1
 expr1.ASM
 
 
@@ -59,8 +59,8 @@ expr1.ASM
      54	    002F  E8 0000e		 call ligsuiv
      55
      56					 ;iConst
-     57	    0032  6A 03			 push word ptr 3
-Turbo Assembler	 Version 4.1	    03/21/14 11:33:19	    Page 2
+     57	    0032  6A 02			 push word ptr 2
+Turbo Assembler	 Version 4.1	    03/21/14 12:51:19	    Page 2
 expr1.ASM
 
 
@@ -82,7 +82,7 @@ expr1.ASM
      72	    003E  50			 push ax
      73
      74					 ;iConst
-     75	    003F  6A 01			 push word ptr 1
+     75	    003F  6A 02			 push word ptr 2
      76
      77					 ;iadd
      78	    0041  5B			 pop bx

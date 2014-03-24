@@ -56,6 +56,13 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	public void iConst(Ident i) {
+		this.programme += ";iConst\n";
+		if (!arret){
+			this.programme+="push word ptr "+i.getValue()+"\n\n";
+		}
+	}
+	
 	public void iConst() {
 		this.programme += ";iConst\n";
 		if (!arret){
@@ -74,50 +81,19 @@ public class YVMasm extends YVM {
 		}
 	}
 
-	public void stockerPlus() {
-		if (!arret){
-			this.operateurAdd = "iadd";
-		}
-	}
 
-	public void stockerMoins() {
-		if (!arret){
-			this.operateurAdd = "isub";
-		}
-	}
-	public void stockerOu() {
-		if (!arret){
-			this.operateurAdd = "ior";
-		}
-	}
 
 	public void afficherOperateurAdd(){
 		if (!arret){
 			switch(this.operateurAdd){
-		case "iadd": this.programme+=";iadd\npop bx\npop ax\nadd ax,bx\npush ax\n\n"; break;
-		case "isub": this.programme+=";isub\npop bx\npop ax\nsub ax,bx\npush ax\n\n"; break;
-		case "ior" : this.programme+=";ior\npop ax \npop bx or ax,bx \npush ax\n\n"; break;
-		default : this.programme+="ERREUR YVMasm\n";
-		}
-		}
-	}
-	public void stockerDiv() {
-		if (!arret){
-			this.operateurMul= "idiv";
+			case "iadd": this.programme+=";iadd\npop bx\npop ax\nadd ax,bx\npush ax\n\n"; break;
+			case "isub": this.programme+=";isub\npop bx\npop ax\nsub ax,bx\npush ax\n\n"; break;
+			case "ior" : this.programme+=";ior\npop ax \npop bx\nor ax,bx \npush ax\n\n"; break;
+			default : this.programme+="ERREUR YVMasm\n";
+			}
 		}
 	}
 
-	public void stockerMul() {
-		if (!arret){
-			this.operateurMul = "imul";
-		}
-	}
-
-	public void stockerAnd() {
-		if (!arret){
-			this.operateurMul = "iand";
-		}
-	}
 
 	public void afficherOperateurMul(){
 		if (!arret){
@@ -150,19 +126,23 @@ public class YVMasm extends YVM {
 		this.programme+="call ecrent\n\n";
 	}
 
-	public void stockerOppose(){
-		this.opNeg="ineg";
-	}
-
-	public void stockerNeg() {
-		this.opNeg="inot";
-	}
 	
 	public void afficherNeg() {
 		switch(this.opNeg){
 		case "ineg": this.programme+=";ineg\npop ax\nnot ax \npush ax\n\n"; break;
 		case "inot": this.programme+=";inot\npop ax\nmov bx,-1 \nimul bx \n push ax\n\n"; break;
 	}
+	}
+	
+	public void afficherCompare(){
+		switch(this.testIter){
+		case "iegal" : this.programme+=";iegal\npop ax\npop bx\ncmp ax,bx\njne $+\n\n"; break;
+		case "idiff" : break;
+		case "iinf" : break;
+		case "iinfegal" : this.programme+=";iinfegal\npop ax\npop bx\ncmp ax,bx\njg $+6\npush -1\njmp $+4\npush 0"; break;
+		case "isupegal" : break;
+		case "isup" : break;
+		}
 	}
 
 

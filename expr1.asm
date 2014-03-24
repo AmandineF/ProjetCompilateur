@@ -46,7 +46,7 @@ call ecrent
 call ligsuiv
 
 ;iConst
-push word ptr 3
+push word ptr 2
 
 ;iConst
 push word ptr 2
@@ -64,7 +64,7 @@ add ax,bx
 push ax
 
 ;iConst
-push word ptr 1
+push word ptr 2
 
 ;iadd
 pop bx

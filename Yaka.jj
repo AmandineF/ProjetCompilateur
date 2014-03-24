@@ -226,6 +226,8 @@ void instruction() :{}
         affectation()
         |lecture()
         |ecriture()
+        |iteration()
+        |conditionnelle()
 }
 
 void affectation() :{}
@@ -294,14 +296,14 @@ void valeur() : {}
 
 void opRel() : {}
 {
-   "="{expression.ajoutOp("=");} 		
- | "<>" {expression.ajoutOp("<>");} 	
- | "<" {expression.ajoutOp("<");} 		
- | "<=" {expression.ajoutOp("<=");} 	
- | ">" 	{expression.ajoutOp(">");} 	
- | ">=" {expression.ajoutOp(">=");} 	
+   "="{expression.ajoutOp("="); yvm.stockerEgal();} 		
+ | "<>" {expression.ajoutOp("<>"); yvm.stockerDiff();} 	
+ | "<" {expression.ajoutOp("<"); yvm.stockerInfStrict();} 		
+ | "<=" {expression.ajoutOp("<="); yvm.stockerInfEgal();} 	
+ | ">" 	{expression.ajoutOp(">"); yvm.stockerSupStrict();} 	
+ | ">=" {expression.ajoutOp(">="); yvm.stockerSupEgal();} 	
  	
-} 
+}
 
 void opAdd() : {}
 {
@@ -322,4 +324,26 @@ void opNeg() : {}
  | <NON>{yvm.stockerNeg(); expression.ajoutOp("non");}	
 }
 
+/*Itération*/
+
+void iteration() : {}
+{
+<TANTQUE> {yvm.faire();}
+expression() {yvm.iter();}
+<FAIRE> 
+suiteInstr()
+<FAIT> {yvm.fait();}
+}
+
+/*Conditionnelle*/
+void conditionnelle() : {}
+{
+<SI> {yvm.numCond();}
+expression() {yvm.cond();}
+<ALORS>
+instruction() {yvm.sinon();}
+(<SINON>
+instruction())?
+<FSI> {yvm.fsi();}
+}
 

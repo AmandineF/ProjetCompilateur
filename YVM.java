@@ -1,7 +1,8 @@
 public class YVM {
         protected String programme;
+        protected String testIter;
         protected String operateurAdd, operateurMul, opNeg;
-        protected int nbVar=2, store;
+        protected int nbVar=2, store, incrIter, incrCond;
         protected boolean arret;
 
         
@@ -35,7 +36,8 @@ public class YVM {
         public void ouvrePrinc() {
         	if (!arret){
         		this.programme+="ouvrePrinc "+this.nbVar+"\n";
-        	}
+        		this.nbVar = 2;
+                	}
         }
         /* Fonction permettant de stocker les informations lues et traduite plus tard */
         
@@ -87,10 +89,41 @@ public class YVM {
         	// Pour l'affectation, on cherche l'offset de la variable affectée qu'on affichera plus tard 
         }
         
+        //concernant les itérations
+        public void stockerEgal() {
+        	this.testIter="iegal";
+        }
+        
+         public void stockerDiff() {
+        	this.testIter="idiff";
+        }
+        
+         public void stockerInfStrict() {
+        	this.testIter="iinf";
+        }
+        
+        public void stockerInfEgal() {
+        	this.testIter="iinfegal";
+        }
+       
+        public void stockerSupEgal() {
+        	this.testIter="isupegal";
+        }
+        
+        public void stockerSupStrict() {
+        	this.testIter="isup";
+        }
+        
+        public void numCond() {
+        	this.incrCond ++;
+        }
+        
         /* Traduction imédiate */
         
         public void ecrireEnt(){
-        	this.programme+="ecrireEnt\n";
+        	if (!arret){
+        		this.programme+="ecrireEnt\n";
+        	}
         }
         
         public void ecrireChaine() {
@@ -112,6 +145,12 @@ public class YVM {
         	}
         }
                
+        public void iConst(Ident i) {
+        	if (!arret){
+        		this.programme+="iconst "+i.getValue()+"\n";
+       		}
+        }
+        
         public void iConst() {
         	if (!arret){
         		this.programme+="iconst "+YakaTokenManager.entierLu+"\n";
@@ -126,7 +165,39 @@ public class YVM {
         public void charger(Ident i){
         	if (i instanceof IdVar){
         		iLoad();
-        	}else {iConst();}
+        	}else {iConst(i);}
+        }
+        
+         public void faire() {
+        	if (!arret){
+        		this.incrIter++;
+        		this.programme+="FAIRE"+this.incrIter+":\n";
+        		// icrIter est incémenté, il permet d'indiquer le numero de la boucle tantque
+        	}
+        }
+        
+         public void fait() {
+        	if (!arret){
+   
+        		this.programme+="goto FAIRE"+this.incrIter+"\nFAIT"+this.incrIter+":\n";
+        		
+        	}
+        }
+        
+        public void sinon() {
+        	if (!arret){
+   
+        		this.programme+="goto FSI"+this.incrCond+"\nSINON"+this.incrCond+":\n";
+        		
+        	}
+        }
+        
+        public void fsi() {
+        	if (!arret){
+   
+        		this.programme+="FSI"+this.incrCond+":\n";
+        		
+        	}
         }
         
         /* Réutilisation des éléments stockés */
@@ -151,6 +222,17 @@ public class YVM {
         
         public void afficherNeg() {
         	this.programme+=this.opNeg+"\n";
+        }
+        
+        public void iter() {
+        	if (!arret){
+        		this.programme+=this.testIter+"\niffaux FAIT"+this.incrIter+"\n";
+        	}
+        }
+         public void cond() {
+         	 if (!arret){
+         	 	 this.programme+=this.testIter+"\niffaux SINON"+this.incrCond+"\n";
+        	 }
         }
         
         public String genere(){
