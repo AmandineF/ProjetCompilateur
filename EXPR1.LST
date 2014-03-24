@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/21/14 12:51:19	    Page 1
+Turbo Assembler	 Version 4.1	    03/24/14 16:24:32	    Page 1
 expr1.ASM
 
 
@@ -60,7 +60,7 @@ expr1.ASM
      55
      56					 ;iConst
      57	    0032  6A 02			 push word ptr 2
-Turbo Assembler	 Version 4.1	    03/21/14 12:51:19	    Page 2
+Turbo Assembler	 Version 4.1	    03/24/14 16:24:32	    Page 2
 expr1.ASM
 
 

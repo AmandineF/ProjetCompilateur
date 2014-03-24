@@ -46,10 +46,11 @@ call ecrch
 ;iConst
 push word ptr 2
 
-;ineg
+;inot
 pop ax
-not ax 
-push ax
+mov bx,-1 
+imul bx 
+ push ax
 
 ;iLoad
 push word ptr [bp-2]
@@ -63,10 +64,11 @@ push ax
 ;iConst
 push word ptr 3
 
-;ineg
+;inot
 pop ax
-not ax 
-push ax
+mov bx,-1 
+imul bx 
+ push ax
 
 ;iConst
 push word ptr 4

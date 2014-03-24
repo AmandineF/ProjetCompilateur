@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.1	    03/24/14 16:19:00	    Page 1
+Turbo Assembler	 Version 4.1	    03/24/14 16:31:19	    Page 1
 expr2.ASM
 
 
@@ -60,7 +60,7 @@ expr2.ASM
      55					 ;aLaLigne
      56	    0039  E8 0000e		 call ligsuiv
      57
-Turbo Assembler	 Version 4.1	    03/24/14 16:19:00	    Page 2
+Turbo Assembler	 Version 4.1	    03/24/14 16:31:19	    Page 2
 expr2.ASM
 
 
@@ -122,7 +122,7 @@ expr2.ASM
     112	    0068  5B			 pop bx
     113	    0069  58			 pop ax
     114	    006A  03 C3			 add ax,bx
-Turbo Assembler	 Version 4.1	    03/24/14 16:19:00	    Page 3
+Turbo Assembler	 Version 4.1	    03/24/14 16:31:19	    Page 3
 expr2.ASM
 
 
@@ -178,27 +178,29 @@ expr2.ASM
     163	    0095  50			 push ax
     164
     165					 ;iinfegal
-    166	    0096  58			 pop ax
-    167	    0097  5B			 pop bx
+    166	    0096  5B			 pop bx
+    167	    0097  58			 pop ax
     168	    0098  3B C3			 cmp ax,bx
     169	    009A  7F 04			 jg $+6
     170	    009C  6A FF			 push -1
     171	    009E  EB 02			 jmp $+4
-Turbo Assembler	 Version 4.1	    03/24/14 16:19:00	    Page 4
+Turbo Assembler	 Version 4.1	    03/24/14 16:31:19	    Page 4
 expr2.ASM
 
 
 
-    172	    00A0  6A 00			 push 0;ecrireEnt
-    173	    00A2  E8 0000e		 call ecrent
-    174
-    175					 ;aLaLigne
-    176	    00A5  E8 0000e		 call ligsuiv
-    177
-    178					 ;queue
-    179	    00A8  90			 nop
-    180					 EXITCODE
-1   181	    00A9  B4 4C				 MOV	 AH,4Ch
-1   182	    00AB  CD 21				 INT	 21h
-    183					 End debut
+    172	    00A0  6A 00			 push 0
+    173
+    174					 ;ecrireEnt
+    175	    00A2  E8 0000e		 call ecrent
+    176
+    177					 ;aLaLigne
+    178	    00A5  E8 0000e		 call ligsuiv
+    179
+    180					 ;queue
+    181	    00A8  90			 nop
+    182					 EXITCODE
+1   183	    00A9  B4 4C				 MOV	 AH,4Ch
+1   184	    00AB  CD 21				 INT	 21h
+    185					 End debut
 

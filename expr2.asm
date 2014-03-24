@@ -155,8 +155,8 @@ add ax,bx
 push ax
 
 ;iinfegal
-pop ax
 pop bx
+pop ax
 cmp ax,bx
 jg $+6
 push -1

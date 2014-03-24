@@ -129,19 +129,19 @@ public class YVMasm extends YVM {
 	
 	public void afficherNeg() {
 		switch(this.opNeg){
-		case "ineg": this.programme+=";ineg\npop ax\nnot ax \npush ax\n\n"; break;
-		case "inot": this.programme+=";inot\npop ax\nmov bx,-1 \nimul bx \n push ax\n\n"; break;
+		case "inot": this.programme+=";ineg\npop ax\nnot ax \npush ax\n\n"; break;
+		case "ineg": this.programme+=";inot\npop ax\nmov bx,-1 \nimul bx \n push ax\n\n"; break;
 	}
 	}
 	
 	public void afficherCompare(){
 		switch(this.testIter){
-		case "iegal" : this.programme+=";iegal\npop ax\npop bx\ncmp ax,bx\njne $+\n\n"; break;
-		case "idiff" : this.programme+=";iegal\npop ax\npop bx\ncmp ax,bx\nje $+\n\n"; break;
-		case "iinf" :  this.programme+=";iinf\npop ax\npop bx\ncmp ax,bx\njge $+6\npush -1\njmp $+4\npush 0\n\n"; break;
-		case "iinfegal" : this.programme+=";iinfegal\npop ax\npop bx\ncmp ax,bx\njg $+6\npush -1\njmp $+4\npush 0\n\n"; break;
-		case "isupegal" :this.programme+=";iinf\npop ax\npop bx\ncmp ax,bx\njl $+6\npush -1\njmp $+4\npush 0\n\n"; break;
-		case "isup" : this.programme+=";iinf\npop ax\npop bx\ncmp ax,bx\njle $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "iegal" : this.programme+=";iegal\npop bx\npop ax\ncmp ax,bx\njne $+\n\n"; break;
+		case "idiff" : this.programme+=";idiff\npop bx\npop ax\ncmp ax,bx\nje $+\n\n"; break;
+		case "iinf" :  this.programme+=";iinf\npop bx\npop ax\ncmp ax,bx\njge $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "iinfegal" : this.programme+=";iinfegal\npop bx\npop ax\ncmp ax,bx\njg $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "isupegal" :this.programme+=";isupegal\npop bx\npop ax\ncmp ax,bx\njl $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "isup" : this.programme+=";isup\npop bx\npop ax\ncmp ax,bx\njle $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 		}
 	}
 
