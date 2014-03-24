@@ -81,8 +81,6 @@ public class YVMasm extends YVM {
 		}
 	}
 
-
-
 	public void afficherOperateurAdd(){
 		if (!arret){
 			switch(this.operateurAdd){
@@ -93,7 +91,6 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
-
 
 	public void afficherOperateurMul(){
 		if (!arret){
@@ -118,7 +115,6 @@ public class YVMasm extends YVM {
 
 	public void offsetStore() {
 		this.store=Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
-
 	}
 
 	public void ecrireEnt(){
@@ -144,8 +140,56 @@ public class YVMasm extends YVM {
 		case "isup" : this.programme+=";isup\npop bx\npop ax\ncmp ax,bx\njle $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 		}
 	}
+	
+	//gestion de l'itération
+	
+	public void faire() {
+        	if (!arret){
+        		this.incrIter++;
+        		this.programme+="FAIRE"+this.incrIter+":\n";
+        		// icrIter est incémenté, il permet d'indiquer le numero de la boucle tantque
+        	}
+        }
+        
+         public void fait() {
+        	if (!arret){
+   
+        		this.programme+=";goto FAIRE"+this.incrIter+"\njmp FAIRE"+this.incrIter+"\n\nFAIT"+this.incrIter+":\n";
+        		
+        	}
+        }
+	
+	public void iter(){
+		if(!arret){
+			this.programme+= ";iffaux FAIT"+this.incrIter+"\npop ax\ncmp ax,0\nje FAIT"+this.incrIter+"\n\n";
+		}
+	}
+	
+	//gestion de la conditionnelle
+	
+	public void cond() {
+		if (!arret){
+         	 	 this.programme+=";iffaux SINON"+this.incrCond+"\npop ax\ncmp ax,0\nje SINON"+this.incrCond+"\n\n";
+        	 }
+        }
+        
+        public void sinon() {
+        	if (!arret){
+   
+        		this.programme+=";goto FSI"+this.incrCond+"\njmp FSI"+this.incrCond+"\n\nSINON"+this.incrCond+":\n";
+        		
+        	}
+        }
+        
+        public void fsi() {
+        	if (!arret){
+   
+        		this.programme+="FSI"+this.incrCond+":\n\n";
+        		
+        	}
+        }
 
-
+        //fin du programme
 	public void queue() {
 		this.programme += ";queue\n";
 		if (!arret){
