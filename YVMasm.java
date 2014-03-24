@@ -137,11 +137,11 @@ public class YVMasm extends YVM {
 	public void afficherCompare(){
 		switch(this.testIter){
 		case "iegal" : this.programme+=";iegal\npop ax\npop bx\ncmp ax,bx\njne $+\n\n"; break;
-		case "idiff" : break;
-		case "iinf" : break;
-		case "iinfegal" : this.programme+=";iinfegal\npop ax\npop bx\ncmp ax,bx\njg $+6\npush -1\njmp $+4\npush 0"; break;
-		case "isupegal" : break;
-		case "isup" : break;
+		case "idiff" : this.programme+=";iegal\npop ax\npop bx\ncmp ax,bx\nje $+\n\n"; break;
+		case "iinf" :  this.programme+=";iinf\npop ax\npop bx\ncmp ax,bx\njge $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "iinfegal" : this.programme+=";iinfegal\npop ax\npop bx\ncmp ax,bx\njg $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "isupegal" :this.programme+=";iinf\npop ax\npop bx\ncmp ax,bx\njl $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+		case "isup" : this.programme+=";iinf\npop ax\npop bx\ncmp ax,bx\njle $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 		}
 	}
 

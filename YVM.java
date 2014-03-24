@@ -219,6 +219,7 @@ public class YVM {
         		this.programme+="istore " + this.store + "\n";
         	}
         }
+        public void afficherCompare(){}
         
         public void afficherNeg() {
         	this.programme+=this.opNeg+"\n";

@@ -254,9 +254,9 @@ void ecriture() :{}
 void expression() : {}
 {
   simpleExpr() 
-  (opRel() 
-  simpleExpr() 
-  )?
+  ((opRel() 
+  simpleExpr()
+  ){yvm.afficherCompare();})?
 }
 
 

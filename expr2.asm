@@ -154,6 +154,15 @@ pop ax
 add ax,bx
 push ax
 
+;iinfegal
+pop ax
+pop bx
+cmp ax,bx
+jg $+6
+push -1
+jmp $+4
+push 0
+
 ;ecrireEnt
 call ecrent
 

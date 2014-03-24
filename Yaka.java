@@ -349,6 +349,7 @@ public class Yaka implements YakaConstants {
     case 49:
       opRel();
       simpleExpr();
+    yvm.afficherCompare();
       break;
     default:
       jj_la1[13] = jj_gen;
