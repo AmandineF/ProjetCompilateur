@@ -7,8 +7,6 @@ public class TabIdent {
 	private HashMap<String,Ident> globaux;
 	private HashMap<String,Ident> locaux;
 
-
-
 	//méthodes
 
 	public TabIdent(int taille){
@@ -16,10 +14,23 @@ public class TabIdent {
 		locaux = new HashMap<String, Ident>(taille);
 	}
 
-	public Ident chercheIdent(String clef){
+	public Ident chercheIdentLocaux(String clef){
 		return locaux.get(clef);
 	}
-
+	
+	public Ident chercheIdentGlobaux(String clef){
+		return globaux.get(clef);
+	}
+	
+	public Ident chercheIdent(String clef) {
+		Ident tmp = chercheIdentLocaux(clef);
+		if(tmp != null) {
+			return tmp; 	
+		} else {
+			return chercheIdentGlobaux(clef);
+		}
+	}
+	
 	public boolean existeIdent(String clef){
 		return locaux.containsKey(clef);
 	}

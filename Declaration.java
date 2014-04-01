@@ -4,9 +4,9 @@ public class Declaration{
 	
 	private static String identAStocker;
 	private static String typeAStocker;
-	private static String[] typeParam= new String[10];
+	private static String[] typeParam= new String[100];
         private static int entierAStocker;
-        private static int offset;
+        private static int offset, compterParam = -1;
         
        /*Pour chaque constante ou variable, on stocke son type, son nom et sa valeur ( offset pour les variables)*/
         
@@ -22,6 +22,14 @@ public class Declaration{
         public void stockerType(String type){
         	this.typeAStocker = type;
         }//type
+        
+        public void stockerTypeParam(){
+        	compterParam++; 
+        	this.typeParam[compterParam] = this.typeAStocker;
+        }
+        public int getNbParam() {
+        	return compterParam;
+        }
         
         public void calculerOffset(){
         	this.offset = this.offset-2;

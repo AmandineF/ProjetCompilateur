@@ -26,48 +26,66 @@ public class Yaka {
   public static Expression expression = new Expression();
   private static java.io.OutputStream out;
   public static YVM yvm = new YVMasm();
+  
+     public static void main(String args[]) { 
 
-  public static void main(String args[]) { 
-    Yaka analyseur;
-    java.io.InputStream input;
+     Yaka analyseur;
 
-    if (args.length==1) {
-      System.out.print(args[args.length-1] + ": ");
-      try {
-        input = new java.io.FileInputStream(args[args.length-1]+".yaka");
-	out = new FileOutputStream(args[args.length-1]+".asm");
-      } catch (java.io.FileNotFoundException e) {
-        System.out.println("Fichier introuvable.");
-        return;
-      }
-    } else if (args.length==0) {
-      try{
-      input = new java.io.FileInputStream("essai.txt");
-      out =new java.io.FileOutputStream("essai.asm");
-      //System.out.println("Lecture sur l'entree standard...");
-      //input = System.in;
-      }catch (java.io.FileNotFoundException e) {
-      	      System.out.println("Fichier introuvable -> Lecture sur l'entree standard...");
-      	      input = System.in;
-      }
+     java.io.InputStream input;
 
-    } else {
-      System.out.println("Usage: java Gram [fichier]");
-      return;
-    }
-    try {
-      analyseur = new Yaka(input);
-      analyseur.prog();
-      Ecriture.ecrireString(out, yvm.genere());
-      System.out.println("analyse syntaxique reussie!");
-    } catch (ParseException e) {
-      String msg = e.getMessage();
-      msg = msg.substring(0,msg.indexOf("\n"));
-      Ecriture.ecrireString(out, yvm.genere());
-      System.out.println("Erreur de syntaxe : "+msg);
-    }
-  } 
-}
+ 
+
+     if (args.length==1) {
+
+       System.out.print(args[args.length-1] + ": ");
+
+       try {
+
+         input = new java.io.FileInputStream(args[args.length-1]+".yaka");
+
+       } catch (java.io.FileNotFoundException e) {
+
+         System.out.println("Fichier introuvable.");
+
+         return;
+
+       }
+
+     } else if (args.length==0) {
+
+       System.out.println("Lecture sur l'entree standard...");
+
+       input = System.in;
+
+     } else {
+
+       System.out.println("Usage: java Gram [fichier]");
+
+       return;
+
+     }
+
+     try {
+
+       analyseur = new Yaka(input);
+
+       analyseur.prog();
+
+       System.out.println("analyse syntaxique reussie!");
+
+     } catch (ParseException e) {
+
+       String msg = e.getMessage();
+
+       msg = msg.substring(0,msg.indexOf("\n"));
+
+       System.out.println("Erreur de syntaxe : "+msg);
+
+     }
+
+   } 
+
+ }
 
 PARSER_END(Yaka)
 /***************************************/
@@ -158,9 +176,9 @@ void prog() : {}
    <PROGRAMME>  <ident> {yvm.entete();}	
    (declFonction())* /*Nouveau*/
    <PRINCIPAL> /*Nouveau*/
-   bloc(){/*tabIdent.show();*/}
+   bloc(){tabIdent.show();}
    <FPRINCIPAL>  /*Nouveau*/
-   <FPROGRAMME> {yvm.queue();}
+   <FPROGRAMME> {yvm.queue(); yvm.genere();}
    
 }
 
@@ -173,10 +191,10 @@ bloc()
 }
 
 void paramForms() : {}{
-((paramForm()("," paramForm())*)?)
+"("(paramForm()("," paramForm())*)?")"
 }
 void paramForm() : {}{
-type() {tabIdent.stockerTypeParam();} <ident>
+type() {declaration.stockerTypeParam(); } <ident>
 }
 void bloc() : {}{
  (declConst())*
@@ -227,6 +245,7 @@ void type() :{}
    <ENTIER>  {declaration.stockerType("entier");}		
  | <BOOLEEN> {declaration.stockerType("booleen");}
 }
+
 /*
  * Syntaxe des instructions.
  */
@@ -267,7 +286,7 @@ void ecriture() :{}
 }
 
 /*
- * Expression .
+ * Expression 
  */
 void expression() : {}
 {
@@ -306,7 +325,7 @@ void primaire(): {}
 
 void valeur() : {}
 { <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident> (argumentsFonction())? {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
+ | <ident> (argumentsFonction())? {/*yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));*/  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu)); yvm.stop(expression.typage());}				
  | <VRAI> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  
@@ -372,5 +391,5 @@ void retourne() : {} {
 }
 
 void argumentsFonction() : {} {
-	((expression() ("," expression()*)?)
+	"(" (expression() ("," expression())*)? ")"
 }
