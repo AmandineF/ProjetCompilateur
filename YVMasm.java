@@ -19,9 +19,10 @@ public class YVMasm extends YVM {
 		}
 	}
 
-
-
-	public void ouvrePrinc() {
+	/**
+	 * affiche la traduction de ouvrePrinc
+	 */
+    public void ouvrePrinc() {
 		this.programme += ";ouvrePrinc\n";
 		if (!arret){
 			this.programme+="mov bp,sp\nsub sp,"+this.nbVar+"\n\n";
@@ -29,7 +30,7 @@ public class YVMasm extends YVM {
 	}
 
 	/**
-	 * Ecrit une chaîne de caractère
+	 * Affiche la traduction d'une chaine de caractères
 	 */
 	public void ecrireChaine() {
 		this.programme += ";ecrireChaine\n";
@@ -42,7 +43,7 @@ public class YVMasm extends YVM {
 	}
 
 	/**
-	 * lit un entier
+	 * Affiche la traduction de lireEnt
 	 */
 	public void lireEnt() {
 		this.programme += ";lireEnt\n";
@@ -100,7 +101,11 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
-
+	
+	/**
+	 * Affiche la traduction de l'opérateur d'addition dans tous les cas possibles
+	 * 
+	 */
 	public void afficherOperateurAdd(){
 		if (!arret){
 			switch(this.operateurAdd){
@@ -111,8 +116,12 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
-
-	public void afficherOperateurMul(){
+	
+	/**
+	 * Affiche la traduction de l'opérateur de multiplication dans tous les cas possibles
+	 * 
+	 */
+    public void afficherOperateurMul(){
 		if (!arret){
 			switch(this.operateurMul){
 			case "idiv": this.programme+=";idiv\npop bx\npop ax\ncwd\n idiv bx\npush ax\n\n"; break;
@@ -122,6 +131,11 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
+    
+    /**
+	 * Affiche la traduction de iStore
+	 * 
+	 */
 	public void iStore(){
 		this.programme += ";iStore\n";
 		if (!arret){
@@ -133,16 +147,27 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	/**
+	 * Cherche la valeur de l'offset de la variable affectée 
+	 * 
+	 */
 	public void offsetStore() {
 		this.store=Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue();
 	}
 
+	/**
+	 * Affiche la traduction de ecrireEnt
+	 * 
+	 */
 	public void ecrireEnt(){
 		this.programme += ";ecrireEnt\n";
 		this.programme+="call ecrent\n\n";
 	}
 
-	
+	/**
+	 * Affiche la traduction de l'opérateur de négation dans tous les cas possibles
+	 * 
+	 */
 	public void afficherNeg() {
 		switch(this.opNeg){
 		case "inot": this.programme+=";ineg\npop ax\nnot ax \npush ax\n\n"; break;
@@ -150,6 +175,10 @@ public class YVMasm extends YVM {
 	}
 	}
 	
+	/**
+	 * Affiche la traduction de l'opérateur de comparaison dans tous les cas possibles
+	 * 
+	 */
 	public void afficherCompare(){
 		switch(this.testIter){
 		case "iegal" : this.programme+=";iegal\npop bx\npop ax\ncmp ax,bx\njne $+\n\n"; break;
@@ -161,8 +190,11 @@ public class YVMasm extends YVM {
 		}
 	}
 	
-	//gestion de l'itération
 	
+	/**
+	 * Affiche la traduction du début des itérations
+	 * 
+	 */
 	public void faire() {
         	if (!arret){
         		this.incrIter++;
@@ -170,30 +202,45 @@ public class YVMasm extends YVM {
         		// icrIter est incémenté, il permet d'indiquer le numero de la boucle tantque
         	}
         }
-        
-         public void fait() {
+	
+	/**
+	 * Affiche la traduction de la fin des itérations
+	 * 
+	 */   
+    public void fait() {
         	if (!arret){
    
         		this.programme+=";goto FAIRE"+this.incrIter+"\njmp FAIRE"+this.incrIter+"\n\nFAIT"+this.incrIter+":\n";
         		
         	}
         }
-	
+    
+    /**
+	 * Affiche la traduction des tests des itérations
+	 * 
+	 */
 	public void iter(){
 		if(!arret){
 			this.programme+= ";iffaux FAIT"+this.incrIter+"\npop ax\ncmp ax,0\nje FAIT"+this.incrIter+"\n\n";
 		}
 	}
 	
-	//gestion de la conditionnelle
 	
+	/**
+	 * Affiche la traduction des tests de debut des conditionnelles
+	 * 
+	 */
 	public void cond() {
 		if (!arret){
          	 	 this.programme+=";iffaux SINON"+this.incrCond+"\npop ax\ncmp ax,0\nje SINON"+this.incrCond+"\n\n";
         	 }
         }
-        
-        public void sinon() {
+    
+	/**
+	 * Affiche la traduction du sinon des conditionnelles
+	 * 
+	 */
+    public void sinon() {
         	if (!arret){
    
         		this.programme+=";goto FSI"+this.incrCond+"\njmp FSI"+this.incrCond+"\n\nSINON"+this.incrCond+":\n";
@@ -201,6 +248,10 @@ public class YVMasm extends YVM {
         	}
         }
         
+    /**
+	 * Affiche la traduction de la fin des conditionnelles
+	 * 
+	 */
         public void fsi() {
         	if (!arret){
    
@@ -209,7 +260,10 @@ public class YVMasm extends YVM {
         	}
         }
 
-        //fin du programme
+        /**
+    	 * Affiche la traduction de la fin du programme
+    	 * 
+    	 */
 	public void queue() {
 		this.programme += ";queue\n";
 		if (!arret){
