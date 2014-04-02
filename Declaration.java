@@ -23,17 +23,19 @@ public class Declaration{
         	this.typeAStocker = type;
         }//type
         
-        public void stockerTypeParam(){
-        	compterParam++; 
-        	this.typeParam[compterParam] = this.typeAStocker;
-        }
-        public int getNbParam() {
-        	return compterParam;
-        }
-        
         public void calculerOffset(){
         	this.offset = this.offset-2;
         }//incrémentation de l'offset pour les variables
+        
+        public void stockerTypeParam(){
+	       	compterParam++; 
+	       	this.typeParam[compterParam] = this.typeAStocker;
+	}
+	public int getNbParam() {
+	 	return compterParam;
+	}
+	        
+
         
         /* On regroupe finalement toutes les informations dans un tableau qu'on pourra afficher */
       

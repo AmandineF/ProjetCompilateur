@@ -1,12 +1,17 @@
-
+/**
+ * YVMasm est la classe permettant de générer le code en assembleur accompagné du code YVM en commentaire
+ * @author Chassing Frank, Bignon Baptiste, Fouillet Amandine, Leparquier Mathilde
+ */
 public class YVMasm extends YVM {
+	
+	//Attribut
 	int cpt = 0;
-	
-	
-	public YVMasm() {
 
-	}
-
+	//Méthodes
+	
+	/**
+	 * affiche l'entête du programme
+	 */
 	public void entete() {
 		this.programme += ";entete\n";
 		if (!arret){
@@ -15,11 +20,6 @@ public class YVMasm extends YVM {
 	}
 
 
-	public void incVar(){
-		if (!arret){
-			this.nbVar+=2;
-		}
-	}
 
 	public void ouvrePrinc() {
 		this.programme += ";ouvrePrinc\n";
@@ -28,6 +28,9 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	/**
+	 * Ecrit une chaîne de caractère
+	 */
 	public void ecrireChaine() {
 		this.programme += ";ecrireChaine\n";
 		if (!arret){
@@ -38,6 +41,9 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	/**
+	 * lit un entier
+	 */
 	public void lireEnt() {
 		this.programme += ";lireEnt\n";
 		if (!arret){
@@ -49,6 +55,9 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	/**
+	 * passe à la ligne suivante
+	 */
 	public void aLaLigne() {
 		this.programme += ";aLaLigne\n";
 		if (!arret){
@@ -56,6 +65,10 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	/**
+	 * push la constante correspondant à l'Ident en paramètre sur la pile
+	 * @param Ident : i
+	 */
 	public void iConst(Ident i) {
 		this.programme += ";iConst\n";
 		if (!arret){
@@ -63,6 +76,9 @@ public class YVMasm extends YVM {
 		}
 	}
 	
+	/**
+	 * push l'entier lu sur la pile
+	 */
 	public void iConst() {
 		this.programme += ";iConst\n";
 		if (!arret){
@@ -70,6 +86,10 @@ public class YVMasm extends YVM {
 		}
 	}
 
+	/**
+	 * push l'Ident lu sur la pile
+	 * @param Ident : i
+	 */
 	public void iLoad(){
 		this.programme += ";iLoad\n";
 		if (!arret){
