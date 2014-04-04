@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 public class IdFonction extends Ident {
-	
+
 
 	/**
 	 * Hashmap contenant le type des paramètres des fonctions
@@ -17,7 +17,7 @@ public class IdFonction extends Ident {
 	 * Entier indiquant le nombre de paramètre des fonctions
 	 */
 	private int nbParam;
-	
+
 
 	/**
 	 * Constructeur d'IdFonction
@@ -36,15 +36,30 @@ public class IdFonction extends Ident {
 			}else typeParam.addLast("ENTIER");
 		}
 	}
-	
 
-	
-	
+
+
+
 	public int getValue(){return 0;} //A oublier, cette méthode n'est pas utile à IdFonction (sauf cas d'erreur)
-	
-	
 
-	
+	/**
+	 * Retourne le nombre de paramètre de la fonction
+	 * @return nbParam : int contenant le nombre de paramètre de la fonction
+	 */
+
+	public int nbParam(){
+		return nbParam;
+	}
+
+	/**
+	 * Retourne la liste des types des paramètres de la fonction
+	 * @return typeParam : String contenant la liste des types des paramètres de la fonction
+	 */
+
+	public LinkedList<String> typeParam(){
+		return typeParam;
+	}
+
 	/** Affiche la fonction selon une norme
 	 * @param s : String contenant la clef (le nom) de la fonction à afficher
 	 */
@@ -53,6 +68,6 @@ public class IdFonction extends Ident {
 		for(int i=0;i<nbParam;i++){Ecriture.ecrireString(this.typeParam.get(i) + " ");}
 		Ecriture.ecrireString("\n");
 	}
-				
+
 }
 
