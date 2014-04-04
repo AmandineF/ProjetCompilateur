@@ -24,7 +24,7 @@ public class Yaka {
   public static Declaration declaration = new Declaration();
   public static TabIdent tabIdent = new TabIdent(50);
   public static Expression expression = new Expression();
-  private static java.io.OutputStream out;
+  private static java.io.OutputStream out = System.out;
   public static YVM yvm = new YVMasm();
 
   public static void main(String args[]) { 
@@ -63,6 +63,9 @@ public class Yaka {
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\n"));
+      tabIdent.show();
+      //System.out.println(out+"\n\n");
+      //System.out.println(yvm.genere());
       Ecriture.ecrireString(out, yvm.genere());
       System.out.println("Erreur de syntaxe : "+msg);
     }
@@ -176,7 +179,7 @@ void paramForms() : {}{
 "("(paramForm()("," paramForm())*)?")"
 }
 void paramForm() : {}{
-type() {declaration.stockerTypeParam();} <ident>
+type() {declaration.stockerTypeParam();} <ident>{declaration.stockerParam();}
 }
 void bloc() : {}{
  (declConst())*
