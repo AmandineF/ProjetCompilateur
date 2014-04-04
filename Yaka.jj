@@ -63,6 +63,7 @@ public class Yaka {
     } catch (ParseException e) {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\n"));
+      System.out.println("\n\nfin\n\n");
       tabIdent.show();
       //System.out.println(out+"\n\n");
       //System.out.println(yvm.genere());
@@ -161,7 +162,7 @@ void prog() : {}
    <PROGRAMME>  <ident> {yvm.entete();}	
    (declFonction())* /*Nouveau*/
    <PRINCIPAL> /*Nouveau*/
-   bloc(){/*tabIdent.show();*/}
+   bloc(){/*System.out.println("\n\nfin bloc\n\n");tabIdent.show();*/}
    <FPRINCIPAL>  /*Nouveau*/
    <FPROGRAMME> {yvm.queue();}
    
@@ -169,8 +170,8 @@ void prog() : {}
 
 void declFonction() : {}{
 type() 
-<FONCTION> <ident> {declaration.stockerIdent();}	
-paramForms() {declaration.remplirTableauGlobaux();}
+<FONCTION> <ident> {declaration.stockerIdent();declaration.sauvRetourFonction();}	
+paramForms() {declaration.remplirTableauGlobaux();/*System.out.println("\n\nfin declaration");tabIdent.show();*/}
 bloc()
 <FFONCTION>
 }
@@ -309,7 +310,7 @@ void primaire(): {}
 
 void valeur() : {}
 { <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident>  {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
+ | <ident>(argumentsFonction())?  {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
  | <VRAI> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  

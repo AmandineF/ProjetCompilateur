@@ -1,14 +1,25 @@
+/**
+ * Declaration est la classe permettant de gérer la déclaration des variables, constantes et fonctions
+ * @author Chassing Frank, Bignon Baptiste, Fouillet Amandine, Leparquier Mathilde
+ */
 import java.util.*;
 
 public class TabIdent {
 
-	//attributs
 
+	/**
+	 * Hashmap contenant les variables globales et les fonctions
+	 */
 	private HashMap<String,Ident> globaux;
+	/**
+	 * Hashmap contenant les variables locales et les paramètres des fonctions
+	 */
 	private HashMap<String,Ident> locaux;
 
-	//méthodes
 
+	/**
+	 * Hashmap contenant les variables locales et les paramètres des fonctions
+	 */
 	public TabIdent(int taille){
 		globaux = new HashMap<String, Ident>(taille);
 		locaux = new HashMap<String, Ident>(taille);
@@ -23,12 +34,13 @@ public class TabIdent {
 	}
 
 	public Ident chercheIdent(String clef) {
-		Ident tmp = chercheIdentLocaux(clef);
+		Ident tmp = chercheIdentLocaux(clef); 
 		if(tmp != null) {
-			System.out.println("tmp "+clef+": "+tmp);
+			//débug
+			//System.out.println("tmp "+clef+": "+tmp);
 			return tmp; 	
 		} else {
-			System.out.println("fonction "+clef+": "+chercheIdentGlobaux(clef));
+			//System.out.println("fonction "+clef+": "+chercheIdentGlobaux(clef));
 			return chercheIdentGlobaux(clef);
 		}
 	}
