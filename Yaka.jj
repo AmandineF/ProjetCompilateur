@@ -25,7 +25,7 @@ public class Yaka {
   public static TabIdent tabIdent = new TabIdent(50);
   public static Expression expression = new Expression();
   private static java.io.OutputStream out = System.out;
-  public static YVM yvm = new YVMasm();
+  public static YVM yvm = new YVM();
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -42,8 +42,8 @@ public class Yaka {
       }
     } else if (args.length==0) {
       try{
-      input = new java.io.FileInputStream("essai.txt");
-      out =new java.io.FileOutputStream("essai.asm");
+      input = new java.io.FileInputStream("fonction.txt");
+      out =new java.io.FileOutputStream("fonction2.txt");
       //System.out.println("Lecture sur l'entree standard...");
       //input = System.in;
       }catch (java.io.FileNotFoundException e) {
@@ -162,25 +162,25 @@ void prog() : {}
    <PROGRAMME>  <ident> {yvm.entete();}	
    (declFonction())* /*Nouveau*/
    <PRINCIPAL> /*Nouveau*/
-   bloc(){/*System.out.println("\n\nfin bloc\n\n");tabIdent.show();*/}
+     bloc(){/*System.out.println("\n\nfin bloc\n\n");tabIdent.show();*/}
    <FPRINCIPAL>  /*Nouveau*/
    <FPROGRAMME> {yvm.queue();}
    
 }
 
 void declFonction() : {}{
-type() 
-<FONCTION> <ident> {declaration.stockerIdent();declaration.sauvRetourFonction();}	
+{yvm.fonction();} type() 
+<FONCTION> <ident> {declaration.stockerIdent();declaration.sauvRetourFonction(); yvm.declFonction();}	
 paramForms() {declaration.remplirTableauGlobaux();/*System.out.println("\n\nfin declaration");tabIdent.show();*/}
 bloc()
-<FFONCTION>
+<FFONCTION>{yvm.finFonction();}
 }
 
 void paramForms() : {}{
 "("(paramForm()("," paramForm())*)?")"
 }
 void paramForm() : {}{
-type() {declaration.stockerTypeParam();} <ident>{declaration.stockerParam();}
+type() {yvm.incNbParam(); declaration.stockerTypeParam();} <ident>{declaration.stockerParam();}
 }
 void bloc() : {}{
  (declConst())*
@@ -190,7 +190,7 @@ void bloc() : {}{
 
 void declConst() : {}
 {
-  <CONST>  defConst() ( "," defConst())* ";"
+  <CONST>  defConst()  ( "," defConst())* ";" 
 }
 
 void defConst() : {}
@@ -310,7 +310,7 @@ void primaire(): {}
 
 void valeur() : {}
 { <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident>(argumentsFonction())?  {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}				
+ | <ident>(argumentsFonction())?  {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}							
  | <VRAI> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  
@@ -373,9 +373,10 @@ void conditionnelle() : {}
 void retourne() : {} {
 	<RETOURNE> 
 	expression()
+	{yvm.retour();}
 }
 void argumentsFonction() : {} {
-	"(" (expression() ("," expression())*)? ")"
+	{yvm.reserveRetour();} "(" (expression() ("," expression())*)? ")" {yvm.call();}
 }
 
 

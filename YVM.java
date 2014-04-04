@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.LinkedList;
+
 public class YVM {
 	
 		/**
@@ -25,6 +28,7 @@ public class YVM {
          */
         protected String opNeg;
         
+        private LinkedList<String> nomFonction = new LinkedList<String>();
         /**
          * Attribut dans lequel on stocke le nombre de variables du programme
          */
@@ -48,8 +52,15 @@ public class YVM {
         /**
          * Attribut gérant l'arrêt du programme
          */
+         
+        protected int nbParam = 0;
+        
         protected boolean arret;
-
+        
+        /**
+         * Booleen indiquant si on est dans une fonction ou non
+         */
+             protected boolean fonction;
         /**
          * Permet l'arrêt du programme en cas d'erreur de type
          * @param b : booleen 
@@ -95,10 +106,16 @@ public class YVM {
          */
         public void ouvrePrinc() {
         	if (!arret){
-        		this.programme+="ouvrePrinc "+this.nbVar+"\n";
+        		if(fonction = false) {
+        			this.programme+="ouvrePrinc "+this.nbVar+"\n";
+        		} else {
+        			this.programme+="ouvbloc "+this.nbVar+"\n";
+        		}
         		this.nbVar = 2;
             }
         }
+        
+        
         
        /**
         * Fonction permettant de stocker l'opérateur plus
@@ -231,7 +248,11 @@ public class YVM {
          */
         public void ecrireEnt(){
         	if (!arret){
-        		this.programme+="ecrireEnt\n";
+        		if (Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getType() == "ENTIER") {
+        			this.programme+="ecrireEnt\n";
+        		} else {
+        			this.programme+="ecrireBool\n";
+        		}
         	}
         }
         
@@ -247,12 +268,12 @@ public class YVM {
         /**
          * Fonction permettant de stocker dans programme la traduction immediate de lireEnt
          */
-        public void lireEnt() {
-        	if (!arret){
-        		this.programme+="lireEnt "+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n";
-        		// On récupère l'offset de la variable à lire
-        	}
-        }
+		public void lireEnt() {
+			if (!arret){
+				this.programme+="lireEnt "+ Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getValue()+"\n";
+				// On récupère l'offset de la variable à lire
+			}
+		}
         
         /**
          * Fonction permettant de stocker dans programme la traduction immediate de aLaLigne
@@ -397,12 +418,43 @@ public class YVM {
         	 }
         }
         
+        public void declFonction() {
+        	if(!arret) {
+        		this.programme += YakaTokenManager.identLu + ":\n"; 
+        	}
+        }
+        
+        public void incNbParam() {
+        	this.nbParam+=2;
+        }
+        public void fonction() {
+        	this.fonction = true;
+        }
+        public void finFonction() {
+        	this.programme += "fermebloc " + this.nbParam;
+        	this.fonction = false;
+        	this.nbParam=0;
+        }
+        
+        public void retour(){
+        	this.programme += "fermebloc " + (this.nbParam+4);
+        }
+        
+        public void reserveRetour() {
+        	this.nomFonction.addLast(YakaTokenManager.identLu);
+        	this.programme+= "reserveRetour\n";
+        }
+        
+        public void call(){
+        	this.progamme+= "call " + nomFonction.removeLast();
+        }
+        
          /**
           * Fonction permettant de générer le programme
           * @return String : le texte du programme
           */
         public String genere(){
-        	return programme;
+        	return this.programme;
         }
      
        
