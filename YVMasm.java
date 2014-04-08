@@ -15,7 +15,8 @@ public class YVMasm extends YVM {
 	public void entete() {
 		this.programme += ";entete\n";
 		if (!arret){
-			this.programme="extrn lirent:proc, ecrent:proc\nextrn ecrbool:proc\nextrn ecrch:proc, ligsuiv:proc\n.model SMALL\n.586\n.CODE\n debut :\nSTARTUPCODE\n\n";	
+			this.programme="extrn lirent:proc, ecrent:proc\nextrn ecrbool:proc\nextrn ecrch:proc, ligsuiv:proc\n.model SMALL\n.586\n.CODE\n debut 
+:\nSTARTUPCODE\n\n";	
 		}
 	}
 
@@ -259,7 +260,52 @@ public class YVMasm extends YVM {
         		
         	}
         }
+// Fonctions
 
+		/**
+		* Fonction permettant de stocker dans programme la déclaration d'une fonction
+		*/
+		public void declFonction() {
+        	if(!arret) {
+        		this.programme += YakaTokenManager.identLu + ":\n"; 
+        	}
+        }
+		
+		/**
+		* Fonction permettant de stocker dans programme le code  pour sortir d'une fonction
+		*/
+		public void finFonction() {
+        	this.programme += ";fermebloc " + this.nbParam+"\n";
+			this.programme += "leave\nret "+this.nbParam+"\n";
+        	this.fonction = false;
+        	this.nbParam=0;
+        }
+		
+        /**
+		* Fonction permettant de stocker dans programme le code plaçant la valeur de retour de la fonction sur la pile
+		*/
+        public void retour(){
+        	this.programme += ";ireturn " + (this.nbParam+4);
+			this.programme += "pop ax\nmov [bp+8],ax\n\n";
+        }
+		
+        /**
+		* Fonction réservant de la place sur la pile pour le retour de la fonction
+		*/
+        public void reserveRetour() {
+        	this.nomFonction.addLast(YakaTokenManager.identLu);
+        	this.programme += ";reserveRetour\n";
+			this.programme += "sub sp,2\n\n";
+        }
+		
+        /**
+		* Fonction permettant de stocker dans programme l'appel à une fonction
+		*/
+        public void call(){
+        	this.progamme += ";call " + nomFonction.getLast()+"\n";
+			thi.programme += "call "+ nomFonction.removeLast()+"\n\n";
+        }
+		
         /**
     	 * Affiche la traduction de la fin du programme
     	 * 

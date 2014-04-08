@@ -28,7 +28,7 @@ public class YVM {
          */
         protected String opNeg;
         
-        private LinkedList<String> nomFonction = new LinkedList<String>();
+        protected LinkedList<String> nomFonction = new LinkedList<String>();
         /**
          * Attribut dans lequel on stocke le nombre de variables du programme
          */
@@ -418,33 +418,55 @@ public class YVM {
         	 }
         }
         
+		/**
+		* Fonction permettant de stocker dans programme la déclaration d'une fonction
+		*/
         public void declFonction() {
         	if(!arret) {
         		this.programme += YakaTokenManager.identLu + ":\n"; 
         	}
         }
         
+		/**
+		* Fonction permettant d'incrémenter la taille total des paramètres de la fonction
+		*/
         public void incNbParam() {
         	this.nbParam+=2;
         }
+		
+		 
         public void fonction() {
         	this.fonction = true;
         }
+		
+		/**
+		* Fonction permettant de stocker dans programme le code  pour sortir d'une fonction
+		*/
         public void finFonction() {
         	this.programme += "fermebloc " + this.nbParam;
         	this.fonction = false;
         	this.nbParam=0;
         }
         
+		/**
+		* Fonction permettant de stocker dans programme le code plaçant la valeur de retour de la fonction sur la pile
+		*/
         public void retour(){
         	this.programme += "fermebloc " + (this.nbParam+4);
+			// ireturn au lieu de fermebloc??
         }
         
+		/**
+		* Fonction réservant de la place sur la pile pour le retour de la fonction
+		*/
         public void reserveRetour() {
         	this.nomFonction.addLast(YakaTokenManager.identLu);
         	this.programme+= "reserveRetour\n";
         }
         
+		/**
+		* Fonction permettant de stocker dans programme l'appel à une fonction
+		*/
         public void call(){
         	this.progamme+= "call " + nomFonction.removeLast();
         }
