@@ -3,27 +3,26 @@
  * @author Chassing Frank, Bignon Baptiste, Fouillet Amandine, Leparquier Mathilde
  */
 public class YVMasm extends YVM {
-	
+
 	//Attribut
 	int cpt = 0;
 
 	//Méthodes
-	
+
 	/**
 	 * affiche l'entête du programme
 	 */
 	public void entete() {
 		this.programme += ";entete\n";
 		if (!arret){
-			this.programme="extrn lirent:proc, ecrent:proc\nextrn ecrbool:proc\nextrn ecrch:proc, ligsuiv:proc\n.model SMALL\n.586\n.CODE\n debut 
-:\nSTARTUPCODE\n\n";	
+			this.programme = "extrn lirent:proc, ecrent:proc\nextrn ecrbool:proc\nextrn ecrch:proc, ligsuiv:proc\n.model SMALL\n.586\n.CODE\n debut :\nSTARTUPCODE\n\n";	
 		}
 	}
 
 	/**
 	 * affiche la traduction de ouvrePrinc
 	 */
-    public void ouvrePrinc() {
+	public void ouvrePrinc() {
 		this.programme += ";ouvrePrinc\n";
 		if (!arret){
 			this.programme+="mov bp,sp\nsub sp,"+this.nbVar+"\n\n";
@@ -77,7 +76,7 @@ public class YVMasm extends YVM {
 			this.programme+="push word ptr "+i.getValue()+"\n\n";
 		}
 	}
-	
+
 	/**
 	 * push l'entier lu sur la pile
 	 */
@@ -102,7 +101,7 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Affiche la traduction de l'opérateur d'addition dans tous les cas possibles
 	 * 
@@ -117,12 +116,12 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Affiche la traduction de l'opérateur de multiplication dans tous les cas possibles
 	 * 
 	 */
-    public void afficherOperateurMul(){
+	public void afficherOperateurMul(){
 		if (!arret){
 			switch(this.operateurMul){
 			case "idiv": this.programme+=";idiv\npop bx\npop ax\ncwd\n idiv bx\npush ax\n\n"; break;
@@ -132,8 +131,8 @@ public class YVMasm extends YVM {
 			}
 		}
 	}
-    
-    /**
+
+	/**
 	 * Affiche la traduction de iStore
 	 * 
 	 */
@@ -173,9 +172,9 @@ public class YVMasm extends YVM {
 		switch(this.opNeg){
 		case "inot": this.programme+=";ineg\npop ax\nnot ax \npush ax\n\n"; break;
 		case "ineg": this.programme+=";inot\npop ax\nmov bx,-1 \nimul bx \n push ax\n\n"; break;
+		}
 	}
-	}
-	
+
 	/**
 	 * Affiche la traduction de l'opérateur de comparaison dans tous les cas possibles
 	 * 
@@ -190,33 +189,33 @@ public class YVMasm extends YVM {
 		case "isup" : this.programme+=";isup\npop bx\npop ax\ncmp ax,bx\njle $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Affiche la traduction du début des itérations
 	 * 
 	 */
 	public void faire() {
-        	if (!arret){
-        		this.incrIter++;
-        		this.programme+="FAIRE"+this.incrIter+":\n";
-        		// icrIter est incémenté, il permet d'indiquer le numero de la boucle tantque
-        	}
-        }
-	
+		if (!arret){
+			this.incrIter++;
+			this.programme+="FAIRE"+this.incrIter+":\n";
+			// icrIter est incémenté, il permet d'indiquer le numero de la boucle tantque
+		}
+	}
+
 	/**
 	 * Affiche la traduction de la fin des itérations
 	 * 
 	 */   
-    public void fait() {
-        	if (!arret){
-   
-        		this.programme+=";goto FAIRE"+this.incrIter+"\njmp FAIRE"+this.incrIter+"\n\nFAIT"+this.incrIter+":\n";
-        		
-        	}
-        }
-    
-    /**
+	public void fait() {
+		if (!arret){
+
+			this.programme+=";goto FAIRE"+this.incrIter+"\njmp FAIRE"+this.incrIter+"\n\nFAIT"+this.incrIter+":\n";
+
+		}
+	}
+
+	/**
 	 * Affiche la traduction des tests des itérations
 	 * 
 	 */
@@ -225,91 +224,91 @@ public class YVMasm extends YVM {
 			this.programme+= ";iffaux FAIT"+this.incrIter+"\npop ax\ncmp ax,0\nje FAIT"+this.incrIter+"\n\n";
 		}
 	}
-	
-	
+
+
 	/**
 	 * Affiche la traduction des tests de debut des conditionnelles
 	 * 
 	 */
 	public void cond() {
 		if (!arret){
-         	 	 this.programme+=";iffaux SINON"+this.incrCond+"\npop ax\ncmp ax,0\nje SINON"+this.incrCond+"\n\n";
-        	 }
-        }
-    
+			this.programme+=";iffaux SINON"+this.incrCond+"\npop ax\ncmp ax,0\nje SINON"+this.incrCond+"\n\n";
+		}
+	}
+
 	/**
 	 * Affiche la traduction du sinon des conditionnelles
 	 * 
 	 */
-    public void sinon() {
-        	if (!arret){
-   
-        		this.programme+=";goto FSI"+this.incrCond+"\njmp FSI"+this.incrCond+"\n\nSINON"+this.incrCond+":\n";
-        		
-        	}
-        }
-        
-    /**
+	public void sinon() {
+		if (!arret){
+
+			this.programme+=";goto FSI"+this.incrCond+"\njmp FSI"+this.incrCond+"\n\nSINON"+this.incrCond+":\n";
+
+		}
+	}
+
+	/**
 	 * Affiche la traduction de la fin des conditionnelles
 	 * 
 	 */
-        public void fsi() {
-        	if (!arret){
-   
-        		this.programme+="FSI"+this.incrCond+":\n\n";
-        		
-        	}
-        }
-// Fonctions
+	public void fsi() {
+		if (!arret){
 
-		/**
-		* Fonction permettant de stocker dans programme la déclaration d'une fonction
-		*/
-		public void declFonction() {
-        	if(!arret) {
-        		this.programme += YakaTokenManager.identLu + ":\n"; 
-        	}
-        }
-		
-		/**
-		* Fonction permettant de stocker dans programme le code  pour sortir d'une fonction
-		*/
-		public void finFonction() {
-        	this.programme += ";fermebloc " + this.nbParam+"\n";
-			this.programme += "leave\nret "+this.nbParam+"\n";
-        	this.fonction = false;
-        	this.nbParam=0;
-        }
-		
-        /**
-		* Fonction permettant de stocker dans programme le code plaçant la valeur de retour de la fonction sur la pile
-		*/
-        public void retour(){
-        	this.programme += ";ireturn " + (this.nbParam+4);
-			this.programme += "pop ax\nmov [bp+8],ax\n\n";
-        }
-		
-        /**
-		* Fonction réservant de la place sur la pile pour le retour de la fonction
-		*/
-        public void reserveRetour() {
-        	this.nomFonction.addLast(YakaTokenManager.identLu);
-        	this.programme += ";reserveRetour\n";
-			this.programme += "sub sp,2\n\n";
-        }
-		
-        /**
-		* Fonction permettant de stocker dans programme l'appel à une fonction
-		*/
-        public void call(){
-        	this.progamme += ";call " + nomFonction.getLast()+"\n";
-			thi.programme += "call "+ nomFonction.removeLast()+"\n\n";
-        }
-		
-        /**
-    	 * Affiche la traduction de la fin du programme
-    	 * 
-    	 */
+			this.programme+="FSI"+this.incrCond+":\n\n";
+
+		}
+	}
+	// Fonctions
+
+	/**
+	 * Fonction permettant de stocker dans programme la déclaration d'une fonction
+	 */
+	public void declFonction() {
+		if(!arret) {
+			this.programme += YakaTokenManager.identLu + ":\n"; 
+		}
+	}
+
+	/**
+	 * Fonction permettant de stocker dans programme le code  pour sortir d'une fonction
+	 */
+	public void finFonction() {
+		this.programme += ";fermebloc " + this.nbParam+"\n";
+		this.programme += "leave\nret "+this.nbParam+"\n";
+		this.fonction = false;
+		this.nbParam=0;
+	}
+
+	/**
+	 * Fonction permettant de stocker dans programme le code plaçant la valeur de retour de la fonction sur la pile
+	 */
+	public void retour(){
+		this.programme += ";ireturn " + (this.nbParam+4);
+		this.programme += "pop ax\nmov [bp+8],ax\n\n";
+	}
+
+	/**
+	 * Fonction réservant de la place sur la pile pour le retour de la fonction
+	 */
+	public void reserveRetour() {
+		this.nomFonction.addLast(YakaTokenManager.identLu);
+		this.programme += ";reserveRetour\n";
+		this.programme += "sub sp,2\n\n";
+	}
+
+	/**
+	 * Fonction permettant de stocker dans programme l'appel à une fonction
+	 */
+	public void call(){
+		this.programme += ";call " + nomFonction.getLast()+"\n";
+		this.programme += "call "+ nomFonction.removeLast()+"\n\n";
+	}
+
+	/**
+	 * Affiche la traduction de la fin du programme
+	 * 
+	 */
 	public void queue() {
 		this.programme += ";queue\n";
 		if (!arret){

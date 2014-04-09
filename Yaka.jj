@@ -184,7 +184,7 @@ type() {yvm.incNbParam(); declaration.stockerTypeParam();} <ident>{declaration.s
 }
 void bloc() : {}{
  (declConst())*
- (declVar())*		
+ (declVar())*{yvm.ouvrePrinc();}
    suiteInstr() 
 }
 
@@ -223,7 +223,7 @@ void declVar() : {}
       	        declaration.stockerIdent();
       	        declaration.remplirTableauVar();}	
   )* ";"
-{yvm.ouvrePrinc();}	
+	
 }
 
 void type() :{}

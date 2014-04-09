@@ -32,7 +32,7 @@ public class YVM {
         /**
          * Attribut dans lequel on stocke le nombre de variables du programme
          */
-        protected int nbVar=2;
+        protected int nbVar=0;
         
         /**
          * Attribut dans lequel on stocke l'offset de la variable affectée
@@ -111,7 +111,6 @@ public class YVM {
         		} else {
         			this.programme+="ouvbloc "+this.nbVar+"\n";
         		}
-        		this.nbVar = 2;
             }
         }
         
@@ -315,7 +314,7 @@ public class YVM {
          * Fonction permettant 
          */
         public void charger(Ident i){
-        	if (i instanceof IdVar){
+        	if (i instanceof IdVar || i instanceof IdParam){
         		iLoad();
         	}else {iConst(i);}
         }
@@ -431,7 +430,7 @@ public class YVM {
 		* Fonction permettant d'incrémenter la taille total des paramètres de la fonction
 		*/
         public void incNbParam() {
-        	this.nbParam+=2;
+        	this.nbParam++;
         }
 		
 		 
@@ -443,17 +442,18 @@ public class YVM {
 		* Fonction permettant de stocker dans programme le code  pour sortir d'une fonction
 		*/
         public void finFonction() {
-        	this.programme += "fermebloc " + this.nbParam;
+        	this.programme += "fermebloc " + this.nbParam*2+"\n\n";
         	this.fonction = false;
         	this.nbParam=0;
+        	this.nbVar = 0;
         }
         
 		/**
 		* Fonction permettant de stocker dans programme le code plaçant la valeur de retour de la fonction sur la pile
 		*/
         public void retour(){
-        	this.programme += "fermebloc " + (this.nbParam+4);
-			// ireturn au lieu de fermebloc??
+        	this.programme += "ireturn " + (this.nbParam*2+4)+"\n\n";
+			
         }
         
 		/**
@@ -461,14 +461,14 @@ public class YVM {
 		*/
         public void reserveRetour() {
         	this.nomFonction.addLast(YakaTokenManager.identLu);
-        	this.programme+= "reserveRetour\n";
+        	this.programme+= "reserveRetour\n\n";
         }
         
 		/**
 		* Fonction permettant de stocker dans programme l'appel à une fonction
 		*/
         public void call(){
-        	this.progamme+= "call " + nomFonction.removeLast();
+        	this.programme+= "call " + nomFonction.removeLast()+"\n\n";
         }
         
          /**

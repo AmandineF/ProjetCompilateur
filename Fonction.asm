@@ -1,228 +1,99 @@
-extrn lirent:proc, ecrent:proc
-extrn ecrbool:proc
-extrn ecrch:proc, ligsuiv:proc
-.model SMALL
-.586
-.CODE
- debut :
-STARTUPCODE
+entete
+max:
+ouvbloc 2
+iload 4
+istore -6
+iload -6
+iload 6
+isup
+iffaux SINON1
+iload -6
+ireturn 8
 
-;ouvrePrinc
-mov bp,sp
-sub sp,4
-
-;ouvrePrinc
-mov bp,sp
-sub sp,4
-
-;iConst
-push word ptr 4
-
-;iStore
-pop ax
-mov word ptr [bp-6],ax
-
-;iLoad
-push word ptr [bp-6]
-
-;iConst
-push word ptr 6
-
-;isup
-pop bx
-pop ax
-cmp ax,bx
-jle $+6
-push -1
-jmp $+4
-push 0
-
-;iffaux SINON1
-pop ax
-cmp ax,0
-je SINON1
-
-;iLoad
-push word ptr [bp-6]
-
-;goto FSI1
-jmp FSI1
-
+goto FSI1
 SINON1:
-;iConst
-push word ptr 6
+iload 6
+ireturn 8
 
 FSI1:
+fermebloc 4
 
-;iConst
-push word ptr 4
+min:
+ouvbloc 0
+iload 4
+iload 6
+iinf
+iffaux SINON2
+iload 4
+ireturn 8
 
-;iConst
-push word ptr 6
-
-;iinf
-pop bx
-pop ax
-cmp ax,bx
-jge $+6
-push -1
-jmp $+4
-push 0
-
-;iffaux SINON2
-pop ax
-cmp ax,0
-je SINON2
-
-;iConst
-push word ptr 4
-
-;goto FSI2
-jmp FSI2
-
+goto FSI2
 SINON2:
-;iConst
-push word ptr 6
+iload 6
+ireturn 8
 
 FSI2:
+fermebloc 4
 
-;iConst
-push word ptr 4
+sup:
+ouvbloc 0
+iload 4
+iload 6
+ireturn 8
 
-;iConst
-push word ptr 6
+fermebloc 4
 
-;isup
-pop bx
-pop ax
-cmp ax,bx
-jle $+6
-push -1
-jmp $+4
-push 0
+ouvbloc 4
+iconst 5
+istore -8
+lireEnt -10
+aLaLigne
+reserveRetour
 
-;ouvrePrinc
-mov bp,sp
-sub sp,8
+iload -8
+reserveRetour
 
-;ouvrePrinc
-mov bp,sp
-sub sp,8
+iload -10
+iconst 5
+call min
 
-;iConst
-push word ptr 5
+iload -10
+call max
 
-;iStore
-pop ax
-mov word ptr [bp-8],ax
+iload -10
+iconst 2
+iadd
+istore -12
+reserveRetour
 
-;lireEnt
-lea dx,[bp-10]
-push dx
-call lirent
+iconst 1
+reserveRetour
 
-;aLaLigne
-call ligsuiv
+iload -8
+iload -10
+iconst 5
+isub
+call max
 
-;iLoad
-push word ptr [bp-8]
+iload -10
+isub
+reserveRetour
 
-;iLoad
-push word ptr [bp-10]
+iload -8
+iconst 2
+imul
+iload -10
+call min
 
-;iConst
-push word ptr 5
+iload -10
+call sup
 
-;iLoad
-push word ptr [bp-10]
-
-;iLoad
-push word ptr [bp-10]
-
-;iConst
-push word ptr 2
-
-;iadd
-pop bx
-pop ax
-add ax,bx
-push ax
-
-;iStore
-pop ax
-mov word ptr [bp-12],ax
-
-;iConst
-push word ptr 1
-
-;iLoad
-push word ptr [bp-8]
-
-;iLoad
-push word ptr [bp-10]
-
-;iConst
-push word ptr 5
-
-;isub
-pop bx
-pop ax
-sub ax,bx
-push ax
-
-;iLoad
-push word ptr [bp-10]
-
-;isub
-pop bx
-pop ax
-sub ax,bx
-push ax
-
-;iLoad
-push word ptr [bp-8]
-
-;iConst
-push word ptr 2
-
-;imul
-pop bx
-pop ax
-imul bx
-push ax
-
-;iLoad
-push word ptr [bp-10]
-
-;iLoad
-push word ptr [bp-10]
-
-;iLoad
-push word ptr [bp-10]
-
-;iStore
-pop ax
-mov word ptr [bp-14],ax
-
-;aLaLigne
-call ligsuiv
-
-;iLoad
-push word ptr [bp-12]
-
-;ecrireEnt
-call ecrent
-
-;aLaLigne
-call ligsuiv
-
-;iLoad
-push word ptr [bp-14]
-
-;ecrireEnt
-call ecrent
-
-;queue
-nop
-EXITCODE
-End debut
+iload -10
+istore -14
+aLaLigne
+iload -12
+ecrireEnt
+aLaLigne
+iload -14
+ecrireEnt
+queue

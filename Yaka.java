@@ -9,7 +9,7 @@ public class Yaka implements YakaConstants {
   public static TabIdent tabIdent = new TabIdent(50);
   public static Expression expression = new Expression();
   private static java.io.OutputStream out = System.out;
-  public static YVM yvm = new YVMasm();
+  public static YVM yvm = new YVM();
 
   public static void main(String args[]) {
     Yaka analyseur;
@@ -26,8 +26,8 @@ public class Yaka implements YakaConstants {
       }
     } else if (args.length==0) {
       try{
-      input = new java.io.FileInputStream("essai.txt");
-      out =new java.io.FileOutputStream("essai.asm");
+      input = new java.io.FileInputStream("fonction.txt");
+      out =new java.io.FileOutputStream("fonction2.txt");
       //System.out.println("Lecture sur l'entree standard...");
       //input = System.in;
       }catch (java.io.FileNotFoundException e) {
@@ -85,14 +85,16 @@ public class Yaka implements YakaConstants {
   }
 
   static final public void declFonction() throws ParseException {
+ yvm.fonction();
     type();
     jj_consume_token(FONCTION);
     jj_consume_token(ident);
-                    declaration.stockerIdent();declaration.sauvRetourFonction();
+                    declaration.stockerIdent();declaration.sauvRetourFonction(); yvm.declFonction();
     paramForms();
               declaration.remplirTableauGlobaux();/*System.out.println("\n\nfin declaration");tabIdent.show();*/
     bloc();
     jj_consume_token(FFONCTION);
+            yvm.finFonction();
   }
 
   static final public void paramForms() throws ParseException {
@@ -124,9 +126,9 @@ public class Yaka implements YakaConstants {
 
   static final public void paramForm() throws ParseException {
     type();
-        declaration.stockerTypeParam();
+        yvm.incNbParam(); declaration.stockerTypeParam();
     jj_consume_token(ident);
-                                                 declaration.stockerParam();
+                                                                   declaration.stockerParam();
   }
 
   static final public void bloc() throws ParseException {
@@ -154,6 +156,7 @@ public class Yaka implements YakaConstants {
       }
       declVar();
     }
+              yvm.ouvrePrinc();
     suiteInstr();
   }
 
@@ -238,7 +241,6 @@ public class Yaka implements YakaConstants {
                 declaration.remplirTableauVar();
     }
     jj_consume_token(43);
- yvm.ouvrePrinc();
   }
 
   static final public void type() throws ParseException {
@@ -670,9 +672,11 @@ public class Yaka implements YakaConstants {
   static final public void retourne() throws ParseException {
     jj_consume_token(RETOURNE);
     expression();
+         yvm.retour();
   }
 
   static final public void argumentsFonction() throws ParseException {
+         yvm.reserveRetour();
     jj_consume_token(40);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case VRAI:
@@ -702,6 +706,7 @@ public class Yaka implements YakaConstants {
       ;
     }
     jj_consume_token(42);
+                                                                            yvm.call();
   }
 
   static private boolean jj_initialized_once = false;
