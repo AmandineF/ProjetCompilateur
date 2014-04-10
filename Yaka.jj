@@ -25,7 +25,7 @@ public class Yaka {
   public static TabIdent tabIdent = new TabIdent(50);
   public static Expression expression = new Expression();
   private static java.io.OutputStream out = System.out;
-  public static YVM yvm = new YVM();
+  public static YVM yvm = new YVMasm();
 
   public static void main(String args[]) { 
     Yaka analyseur;
@@ -161,7 +161,7 @@ void prog() : {}
 {
    <PROGRAMME>  <ident> {yvm.entete();}	
    (declFonction())* /*Nouveau*/
-   <PRINCIPAL> /*Nouveau*/
+   <PRINCIPAL>{yvm.afficherMain();}
      bloc(){/*System.out.println("\n\nfin bloc\n\n");tabIdent.show();*/}
    <FPRINCIPAL>  /*Nouveau*/
    <FPROGRAMME> {yvm.queue();}
@@ -173,7 +173,7 @@ void declFonction() : {}{
 <FONCTION> <ident> {declaration.stockerIdent();declaration.sauvRetourFonction(); yvm.declFonction();}	
 paramForms() {declaration.remplirTableauGlobaux();/*System.out.println("\n\nfin declaration");tabIdent.show();*/}
 bloc()
-<FFONCTION>{yvm.finFonction();}
+<FFONCTION>{yvm.finFonction();tabIdent.clearLocaux();declaration.clearOffset();}
 }
 
 void paramForms() : {}{
@@ -217,11 +217,11 @@ void declVar() : {}
 {
   <VAR>   {declaration.calculerOffset();} type() 	
   <ident> {declaration.stockerIdent();
-  	   declaration.remplirTableauVar();}				
-  ("," {yvm.incVar();}
+  	   declaration.remplirTableauVar();yvm.incVar();}				
+  ("," 
       <ident>  {declaration.calculerOffset();
       	        declaration.stockerIdent();
-      	        declaration.remplirTableauVar();}	
+      	        declaration.remplirTableauVar();yvm.incVar();}	
   )* ";"
 	
 }
@@ -310,7 +310,7 @@ void primaire(): {}
 
 void valeur() : {}
 { <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
- | <ident>(argumentsFonction())?  {yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}							
+ | <ident>{yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}(argumentsFonction())?  							
  | <VRAI> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
  | <FAUX> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  

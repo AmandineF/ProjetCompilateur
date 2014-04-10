@@ -53,7 +53,7 @@ public class Declaration{
 	 * Stocke le nom du paramètre lu
 	 */
 	public void stockerParam(){
-		clefParam.addLast(YakaTokenManager.identLu);
+		clefParam.addFirst(YakaTokenManager.identLu);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Declaration{
 	 */
 	public void stockerTypeParam(){
 		compterParam++; 
-		this.typeParam.addLast(this.typeAStocker);
+		this.typeParam.addFirst(this.typeAStocker);
 	}
 
 	/**
@@ -130,5 +130,9 @@ public class Declaration{
 		compterParam = -1;
 		typeParam = new LinkedList();
 		clefParam = new LinkedList();
+	}
+	
+	public void clearOffset(){
+		this.offset = 0;
 	}
 }
