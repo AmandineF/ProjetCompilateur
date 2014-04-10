@@ -16,7 +16,10 @@ public class Expression{
 	*/
 	private LinkedList<String> loperateur = new LinkedList<String>();
 	private LinkedList<String> ltype = new LinkedList<String>();
-
+	private String fonct, foncttmp;
+	private IdFonction f;
+	private LinkedList<LinkedList<String>> lparam = new LinkedList<LinkedList<String>>();
+	
 	
 	/**
 	 * Contrôle la concordance des types, vérifie si les types sont en accord avec les opérations
@@ -156,7 +159,22 @@ public class Expression{
 	public void ajoutType(String type){
 		ltype.add(type);	
 	}
-
+	
+	public void ajoutFonction(String f){
+		foncttmp = f;
+	}
+	
+	public void ajoutFonction(){
+		fonct = foncttmp;	
+	}
+	
+	public void ajoutParam(){
+		lparam.addFirst(ltype.getLast());
+	}
+	
+	public void ajoutIdFonct(IdFonction _f){
+		f = _f;
+	}
 	/**
 	 * Vérifie que les conditions d'éxécution du contrôle de type sont présentes, et l'effectue si c'est le cas
 	 * @return boolean : vrai si le controle de type est correct, faux sinon
@@ -182,15 +200,40 @@ public class Expression{
 	 * @param f : IdFonction necessaire pour récupérer le type de la fonction
 	 * @return boolean : vrai si le type de retour de la fonction correspond à son type, faux sinon
 	 */
-	public boolean controleRetourDeFonction(IdFonction f){
-		String typef = f.getType();
+	public boolean controleRetourDeFonction(){
+		String typef = fonct;
 		String typeRetour = ltype.getLast();
+		//System.out.println("type retour : "+typef+"\n");
+		//System.out.println("type sur la pile : "+typeRetour+"\n");
 		if(typef.equals(typeRetour)){
 			return true;
 		}else{
 			ltype.removeLast();
 			ltype.addLast("ERREUR");
+			System.out.println("\nErreur type retour de fonction\n");
 			return false;
 		}
 	}
+	
+	public boolean controleParamFonction(){
+		if (lparam.size() == f.nbParam()){
+			for (int i = 0; i<lparam.size(); i++){
+				String tmp = lparam.pollFirst();
+				if(!tmp.equals(f.getTypeParam(i))){
+					System.out.println("\nErreur type de paramètre : "+ tmp+" au lieu de "+f.getTypeParam(i)+"\n");
+					lparam = new LinkedList<String>();
+					return false;
+				}
+			}
+						return true;
+		}else {
+			for (int i = 0; i<lparam.size(); i++){
+				System.out.println(lparam.get(i));
+			}
+			System.out.println("\nErreur nombre de paramètre : "+lparam.size()+" au lieu de "+f.nbParam()+"\n");
+			lparam = new LinkedList<String>();
+			return false;
+		}
+	}
+	
 }

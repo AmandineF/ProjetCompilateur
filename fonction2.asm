@@ -160,27 +160,35 @@ sub sp,2
 ;iLoad
 push word ptr [bp-2]
 
-;reserveRetour
-sub sp,2
-
 ;iLoad
 push word ptr [bp-4]
 
-;iConst
-push word ptr 5
+;call max
+call max
 
-;iConst
 ;iStore
-;iConst
-;iLoad
-;iLoad
-;iConst
-;iLoad
-;iConst
-;iLoad
-;iStore
+pop ax
+mov word ptr [bp-6],ax
+
 ;aLaLigne
+call ligsuiv
+
 ;iLoad
+push word ptr [bp-6]
+
+ecrireEnt
+call ecrent
+
 ;aLaLigne
+call ligsuiv
+
 ;iLoad
+push word ptr [bp-8]
+
+;ecrireBool
+call ecrbool
+
 ;queue
+nop
+EXITCODE
+end

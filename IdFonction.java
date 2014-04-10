@@ -31,7 +31,7 @@ public class IdFonction extends Ident {
 		}else this.type = "ENTIER";
 		this.nbParam = rangParam+1;
 		for(int i=0;i<nbParam;i++){
-			if (tp.getFirst().startsWith("b") || tp.getFirst().startsWith("B")){
+			if (tp.get(i).startsWith("b") || tp.get(i).startsWith("B")){
 				typeParam.addLast("BOOLEEN");	
 			}else typeParam.addLast("ENTIER");
 		}
@@ -51,6 +51,9 @@ public class IdFonction extends Ident {
 		return nbParam;
 	}
 
+	public String getTypeParam(int i){
+		return typeParam.get(i);
+	}
 	/**
 	 * Retourne la liste des types des paramètres de la fonction
 	 * @return typeParam : String contenant la liste des types des paramètres de la fonction

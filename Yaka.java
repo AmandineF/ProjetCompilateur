@@ -9,7 +9,7 @@ public class Yaka implements YakaConstants {
   public static TabIdent tabIdent = new TabIdent(50);
   public static Expression expression = new Expression();
   private static java.io.OutputStream out = System.out;
-  public static YVM yvm = new YVM();
+  public static YVM yvm = new YVMasm();
 
   public static void main(String args[]) {
     Yaka analyseur;
@@ -77,6 +77,7 @@ public class Yaka implements YakaConstants {
       declFonction();
     }
     jj_consume_token(PRINCIPAL);
+               yvm.afficherMain();
     bloc();
 
     jj_consume_token(FPRINCIPAL);
@@ -87,6 +88,7 @@ public class Yaka implements YakaConstants {
   static final public void declFonction() throws ParseException {
  yvm.fonction();
     type();
+                          expression.ajoutFonction();
     jj_consume_token(FONCTION);
     jj_consume_token(ident);
                     declaration.stockerIdent();declaration.sauvRetourFonction(); yvm.declFonction();
@@ -94,7 +96,7 @@ public class Yaka implements YakaConstants {
               declaration.remplirTableauGlobaux();/*System.out.println("\n\nfin declaration");tabIdent.show();*/
     bloc();
     jj_consume_token(FFONCTION);
-            yvm.finFonction();
+            yvm.finFonction();tabIdent.clearLocaux();declaration.clearOffset();
   }
 
   static final public void paramForms() throws ParseException {
@@ -222,7 +224,7 @@ public class Yaka implements YakaConstants {
     type();
     jj_consume_token(ident);
            declaration.stockerIdent();
-           declaration.remplirTableauVar();
+           declaration.remplirTableauVar();yvm.incVar();
     label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -234,11 +236,10 @@ public class Yaka implements YakaConstants {
         break label_6;
       }
       jj_consume_token(41);
-        yvm.incVar();
       jj_consume_token(ident);
                 declaration.calculerOffset();
                 declaration.stockerIdent();
-                declaration.remplirTableauVar();
+                declaration.remplirTableauVar();yvm.incVar();
     }
     jj_consume_token(43);
   }
@@ -247,11 +248,11 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case ENTIER:
       jj_consume_token(ENTIER);
-              declaration.stockerType("entier");
+              declaration.stockerType("ENTIER");expression.ajoutFonction("ENTIER");
       break;
     case BOOLEEN:
       jj_consume_token(BOOLEEN);
-              declaration.stockerType("booleen");
+              declaration.stockerType("BOOLEEN");expression.ajoutFonction("BOOLEEN");
       break;
     default:
       jj_la1[8] = jj_gen;
@@ -517,6 +518,7 @@ public class Yaka implements YakaConstants {
       break;
     case ident:
       jj_consume_token(ident);
+           yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case 40:
         argumentsFonction();
@@ -525,7 +527,6 @@ public class Yaka implements YakaConstants {
         jj_la1[21] = jj_gen;
         ;
       }
-                                   yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());
       break;
     case VRAI:
       jj_consume_token(VRAI);
@@ -672,11 +673,11 @@ public class Yaka implements YakaConstants {
   static final public void retourne() throws ParseException {
     jj_consume_token(RETOURNE);
     expression();
-         yvm.retour();
+         yvm.stop(expression.controleRetourDeFonction());yvm.retour();
   }
 
   static final public void argumentsFonction() throws ParseException {
-         yvm.reserveRetour();
+         yvm.reserveRetour();expression.ajoutIdFonct((IdFonction)tabIdent.chercheIdent(YakaTokenManager.identLu));
     jj_consume_token(40);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case VRAI:
@@ -687,6 +688,7 @@ public class Yaka implements YakaConstants {
     case 40:
     case 51:
       expression();
+                                                                                                                                      expression.ajoutParam();
       label_11:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -699,6 +701,7 @@ public class Yaka implements YakaConstants {
         }
         jj_consume_token(41);
         expression();
+                                                                                                                                                                                  expression.ajoutParam();
       }
       break;
     default:
@@ -706,7 +709,7 @@ public class Yaka implements YakaConstants {
       ;
     }
     jj_consume_token(42);
-                                                                            yvm.call();
+                                                                                                                                                                                                                     yvm.stop(expression.controleParamFonction());yvm.call();
   }
 
   static private boolean jj_initialized_once = false;

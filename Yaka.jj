@@ -169,7 +169,7 @@ void prog() : {}
 }
 
 void declFonction() : {}{
-{yvm.fonction();} type() 
+{yvm.fonction();} type() {expression.ajoutFonction();}
 <FONCTION> <ident> {declaration.stockerIdent();declaration.sauvRetourFonction(); yvm.declFonction();}	
 paramForms() {declaration.remplirTableauGlobaux();/*System.out.println("\n\nfin declaration");tabIdent.show();*/}
 bloc()
@@ -228,8 +228,8 @@ void declVar() : {}
 
 void type() :{}
 {
-   <ENTIER>  {declaration.stockerType("entier");}		
- | <BOOLEEN> {declaration.stockerType("booleen");}
+   <ENTIER>  {declaration.stockerType("ENTIER");expression.ajoutFonction("ENTIER");}		
+ | <BOOLEEN> {declaration.stockerType("BOOLEEN");expression.ajoutFonction("BOOLEEN");}
 }
 /*
  * Syntaxe des instructions.
@@ -373,10 +373,10 @@ void conditionnelle() : {}
 void retourne() : {} {
 	<RETOURNE> 
 	expression()
-	{yvm.retour();}
+	{yvm.stop(expression.controleRetourDeFonction());yvm.retour();}
 }
 void argumentsFonction() : {} {
-	{yvm.reserveRetour();} "(" (expression() ("," expression())*)? ")" {yvm.call();}
+	{yvm.reserveRetour();expression.ajoutIdFonct((IdFonction)tabIdent.chercheIdent(YakaTokenManager.identLu));} "(" (expression(){expression.ajoutParam();} ("," expression(){expression.ajoutParam();})*)? ")" {yvm.stop(expression.controleParamFonction());yvm.call();}
 }
 
 
