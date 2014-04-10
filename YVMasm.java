@@ -327,8 +327,8 @@ public class YVMasm extends YVM {
 	 * Fonction permettant de stocker dans programme l'appel à une fonction
 	 */
 	public void call(){
+		this.programme += ";call " + nomFonction.getLast()+"\n";
 		if(!arret){
-			this.programme += ";call " + nomFonction.getLast()+"\n";
 			this.programme += "call "+ nomFonction.removeLast()+"\n\n";
 		}
 	}

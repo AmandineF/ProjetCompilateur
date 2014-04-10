@@ -169,18 +169,105 @@ push word ptr [bp-4]
 ;iConst
 push word ptr 5
 
+;call min
+call min
+
+;call max
+call max
+
 ;iConst
+push word ptr 2
+
+;iadd
+pop bx
+pop ax
+add ax,bx
+push ax
+
 ;iStore
+pop ax
+mov word ptr [bp-6],ax
+
+;reserveRetour
+sub sp,2
+
 ;iConst
+push word ptr 1
+
+;reserveRetour
+sub sp,2
+
 ;iLoad
+push word ptr [bp-2]
+
 ;iLoad
+push word ptr [bp-4]
+
 ;iConst
+push word ptr 5
+
+;isub
+pop bx
+pop ax
+sub ax,bx
+push ax
+
+;call max
+call max
+
+;iadd
+pop bx
+pop ax
+add ax,bx
+push ax
+
+;reserveRetour
+sub sp,2
+
 ;iLoad
+push word ptr [bp-2]
+
 ;iConst
+push word ptr 2
+
+;imul
+pop bx
+pop ax
+imul bx
+push ax
+
 ;iLoad
+push word ptr [bp-4]
+
+;call min
+call min
+
+;call sup
+call sup
+
 ;iStore
+pop ax
+mov word ptr [bp-8],ax
+
 ;aLaLigne
+call ligsuiv
+
 ;iLoad
+push word ptr [bp-6]
+
+ecrireEnt
+call ecrent
+
 ;aLaLigne
+call ligsuiv
+
 ;iLoad
+push word ptr [bp-8]
+
+;ecrireBool
+call ecrbool
+
 ;queue
+nop
+EXITCODE
+end

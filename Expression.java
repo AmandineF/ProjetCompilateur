@@ -169,11 +169,12 @@ public class Expression{
 	}
 	
 	public void ajoutParam(){
-		lparam.addFirst(ltype.getLast());
+		lparam.getLast().addFirst(ltype.getLast());
 	}
 	
 	public void ajoutIdFonct(IdFonction _f){
 		f = _f;
+		lparam.addLast(new LinkedList<String>());
 	}
 	/**
 	 * Vérifie que les conditions d'éxécution du contrôle de type sont présentes, et l'effectue si c'est le cas
@@ -216,22 +217,24 @@ public class Expression{
 	}
 	
 	public boolean controleParamFonction(){
-		if (lparam.size() == f.nbParam()){
-			for (int i = 0; i<lparam.size(); i++){
-				String tmp = lparam.pollFirst();
-				if(!tmp.equals(f.getTypeParam(i))){
-					System.out.println("\nErreur type de paramètre : "+ tmp+" au lieu de "+f.getTypeParam(i)+"\n");
-					lparam = new LinkedList<String>();
+		LinkedList<String> tmp = lparam.pollLast();
+		if (tmp.size() == f.nbParam()){
+			for (int i = 0; i<tmp.size(); i++){
+				String param = tmp.get(i);
+				if(!param.equals(f.getTypeParam(i))){
+					System.out.println("\nErreur type de paramètre : "+ param+" au lieu de "+f.getTypeParam(i)+"\n");
+					/*for(int j = 0; j<tmp.size(); j++){
+						System.out.println("\ntype "+i+" : "+tmp.get(j)+"\n");
+					}*///debug
 					return false;
 				}
 			}
-						return true;
+			/*for(int i = 0; i<tmp.size(); i++){
+						System.out.println("\ntype "+i+" : "+tmp.get(i)+"\n");
+			}*///debug
+			return true;
 		}else {
-			for (int i = 0; i<lparam.size(); i++){
-				System.out.println(lparam.get(i));
-			}
-			System.out.println("\nErreur nombre de paramètre : "+lparam.size()+" au lieu de "+f.nbParam()+"\n");
-			lparam = new LinkedList<String>();
+			System.out.println("\nErreur nombre de paramètres : "+tmp.size()+" au lieu de "+f.nbParam()+"\n");
 			return false;
 		}
 	}
