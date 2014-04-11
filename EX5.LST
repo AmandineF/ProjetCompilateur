@@ -1,0 +1,451 @@
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 1
+ex5.ASM
+
+
+
+      1					 ;entete
+      2					 extrn lirent:proc, ecrent:proc
+      3					 extrn ecrbool:proc
+      4					 extrn ecrch:proc, ligsuiv:proc
+      5	    0000			 .model	SMALL
+      6					 .586
+      7	    0000			 .CODE
+      8
+      9	    0000			 dessin:
+     10					 ;ouvbloc 12
+     11	    0000  C8 000C 00		 enter 12,0
+     12					 ;iConst
+     13	    0004  6A 00			 push word ptr 0
+     14
+     15					 ;iStore
+     16	    0006  58			 pop ax
+     17	    0007  89 46	F8		 mov word ptr [bp-8],ax
+     18
+     19					 ;iLoad
+     20	    000A  FF 76	04		 push word ptr [bp+4]
+     21
+     22					 ;iConst
+     23	    000D  6A FF			 push word ptr -1
+     24
+     25					 ;iegal
+     26	    000F  5B			 pop bx
+     27	    0010  58			 pop ax
+     28	    0011  3B C3			 cmp ax,bx
+     29	    0013  75 04			 jne $+6
+     30	    0015  6A FF			 push -1
+     31	    0017  EB 02			 jmp $+4
+     32	    0019  6A 00			 push 0
+     33
+     34					 ;iffaux SINON1
+     35	    001B  58			 pop ax
+     36	    001C  3D 0000		 cmp ax,0
+     37	    001F  74 0B	90 90		 je SINON1
+     38
+     39					 ;iConst
+     40	    0023  6A 00			 push word ptr 0
+     41
+     42					 ;iStore
+     43	    0025  58			 pop ax
+     44	    0026  89 46	FE		 mov word ptr [bp-2],ax
+     45
+     46					 ;goto FSI1
+     47	    0029  EB 0F	90		 jmp FSI1
+     48
+     49	    002C			 SINON1:
+     50					 ;iLoad
+     51	    002C  FF 76	06		 push word ptr [bp+6]
+     52
+     53					 ;iConst
+     54	    002F  6A 02			 push word ptr 2
+     55
+     56					 ;isub
+     57	    0031  5B			 pop bx
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 2
+ex5.ASM
+
+
+
+     58	    0032  58			 pop ax
+     59	    0033  2B C3			 sub ax,bx
+     60	    0035  50			 push ax
+     61
+     62					 ;iStore
+     63	    0036  58			 pop ax
+     64	    0037  89 46	FE		 mov word ptr [bp-2],ax
+     65
+     66	    003A			 FSI1:
+     67
+     68	    003A			 FAIRE1:
+     69					 ;iLoad
+     70	    003A  FF 76	FE		 push word ptr [bp-2]
+     71
+     72					 ;iLoad
+     73	    003D  FF 76	06		 push word ptr [bp+6]
+     74
+     75					 ;iinfegal
+     76	    0040  5B			 pop bx
+     77	    0041  58			 pop ax
+     78	    0042  3B C3			 cmp ax,bx
+     79	    0044  7F 04			 jg $+6
+     80	    0046  6A FF			 push -1
+     81	    0048  EB 02			 jmp $+4
+     82	    004A  6A 00			 push 0
+     83
+     84					 ;iffaux FAIT1
+     85	    004C  58			 pop ax
+     86	    004D  3D 0000		 cmp ax,0
+     87	    0050  0F 84	00F8		 je FAIT1
+     88
+     89					 ;iConst
+     90	    0054  6A 00			 push word ptr 0
+     91
+     92					 ;iStore
+     93	    0056  58			 pop ax
+     94	    0057  89 46	FC		 mov word ptr [bp-4],ax
+     95
+     96	    005A			 FAIRE2:
+     97					 ;iLoad
+     98	    005A  FF 76	FC		 push word ptr [bp-4]
+     99
+    100					 ;iLoad
+    101	    005D  FF 76	FE		 push word ptr [bp-2]
+    102
+    103					 ;iinf
+    104	    0060  5B			 pop bx
+    105	    0061  58			 pop ax
+    106	    0062  3B C3			 cmp ax,bx
+    107	    0064  7D 04			 jge $+6
+    108	    0066  6A FF			 push -1
+    109	    0068  EB 02			 jmp $+4
+    110	    006A  6A 00			 push 0
+    111
+    112					 ;iffaux FAIT2
+    113	    006C  58			 pop ax
+    114	    006D  3D 0000		 cmp ax,0
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 3
+ex5.ASM
+
+
+
+    115	    0070  74 4C	90 90		 je FAIT2
+    116
+    117					 ;iLoad
+    118	    0074  FF 76	FC		 push word ptr [bp-4]
+    119
+    120					 ;iLoad
+    121	    0077  FF 76	FC		 push word ptr [bp-4]
+    122
+    123					 ;iConst
+    124	    007A  6A 02			 push word ptr 2
+    125
+    126					 ;idiv
+    127	    007C  5B			 pop bx
+    128	    007D  58			 pop ax
+    129	    007E  99			 cwd
+    130	    007F  F7 FB			  idiv bx
+    131	    0081  50			 push ax
+    132
+    133					 ;iConst
+    134	    0082  6A 02			 push word ptr 2
+    135
+    136					 ;imul
+    137	    0084  5B			 pop bx
+    138	    0085  58			 pop ax
+    139	    0086  F7 EB			 imul bx
+    140	    0088  50			 push ax
+    141
+    142					 ;iegal
+    143	    0089  5B			 pop bx
+    144	    008A  58			 pop ax
+    145	    008B  3B C3			 cmp ax,bx
+    146	    008D  75 04			 jne $+6
+    147	    008F  6A FF			 push -1
+    148	    0091  EB 02			 jmp $+4
+    149	    0093  6A 00			 push 0
+    150
+    151					 ;iffaux SINON2
+    152	    0095  58			 pop ax
+    153	    0096  3D 0000		 cmp ax,0
+    154	    0099  74 0C	90 90		 je SINON2
+    155
+    156					 ;ecrireChaine
+    157	    009D			 .DATA
+    158	    0000  2A 24			 mess0 DB "*$"
+    159	    0002			 .CODE
+    160	    009D  BA 0000r		 lea dx,mess0
+    161	    00A0  52			 push dx
+    162	    00A1  E8 0000e		 call ecrch
+    163
+    164					 ;goto FSI2
+    165	    00A4  EB 08	90		 jmp FSI2
+    166
+    167	    00A7			 SINON2:
+    168					 ;ecrireChaine
+    169	    00A7			 .DATA
+    170	    0002  20 24			 mess1 DB " $"
+    171	    0004			 .CODE
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 4
+ex5.ASM
+
+
+
+    172	    00A7  BA 0002r		 lea dx,mess1
+    173	    00AA  52			 push dx
+    174	    00AB  E8 0000e		 call ecrch
+    175
+    176	    00AE			 FSI2:
+    177
+    178					 ;iLoad
+    179	    00AE  FF 76	FC		 push word ptr [bp-4]
+    180
+    181					 ;iConst
+    182	    00B1  6A 01			 push word ptr 1
+    183
+    184					 ;iadd
+    185	    00B3  5B			 pop bx
+    186	    00B4  58			 pop ax
+    187	    00B5  03 C3			 add ax,bx
+    188	    00B7  50			 push ax
+    189
+    190					 ;iStore
+    191	    00B8  58			 pop ax
+    192	    00B9  89 46	FC		 mov word ptr [bp-4],ax
+    193
+    194					 ;goto FAIRE2
+    195	    00BC  EB 9C			 jmp FAIRE2
+    196
+    197	    00BE			 FAIT2:
+    198					 ;iLoad
+    199	    00BE  FF 76	FE		 push word ptr [bp-2]
+    200
+    201					 ;iStore
+    202	    00C1  58			 pop ax
+    203	    00C2  89 46	FC		 mov word ptr [bp-4],ax
+    204
+    205	    00C5			 FAIRE3:
+    206					 ;iLoad
+    207	    00C5  FF 76	FC		 push word ptr [bp-4]
+    208
+    209					 ;iLoad
+    210	    00C8  FF 76	06		 push word ptr [bp+6]
+    211
+    212					 ;iinf
+    213	    00CB  5B			 pop bx
+    214	    00CC  58			 pop ax
+    215	    00CD  3B C3			 cmp ax,bx
+    216	    00CF  7D 04			 jge $+6
+    217	    00D1  6A FF			 push -1
+    218	    00D3  EB 02			 jmp $+4
+    219	    00D5  6A 00			 push 0
+    220
+    221					 ;iffaux FAIT3
+    222	    00D7  58			 pop ax
+    223	    00D8  3D 0000		 cmp ax,0
+    224	    00DB  74 4C	90 90		 je FAIT3
+    225
+    226					 ;iLoad
+    227	    00DF  FF 76	FC		 push word ptr [bp-4]
+    228
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 5
+ex5.ASM
+
+
+
+    229					 ;iLoad
+    230	    00E2  FF 76	FC		 push word ptr [bp-4]
+    231
+    232					 ;iConst
+    233	    00E5  6A 03			 push word ptr 3
+    234
+    235					 ;idiv
+    236	    00E7  5B			 pop bx
+    237	    00E8  58			 pop ax
+    238	    00E9  99			 cwd
+    239	    00EA  F7 FB			  idiv bx
+    240	    00EC  50			 push ax
+    241
+    242					 ;iConst
+    243	    00ED  6A 03			 push word ptr 3
+    244
+    245					 ;imul
+    246	    00EF  5B			 pop bx
+    247	    00F0  58			 pop ax
+    248	    00F1  F7 EB			 imul bx
+    249	    00F3  50			 push ax
+    250
+    251					 ;idiff
+    252	    00F4  5B			 pop bx
+    253	    00F5  58			 pop ax
+    254	    00F6  3B C3			 cmp ax,bx
+    255	    00F8  74 04			 je $+6
+    256	    00FA  6A FF			 push -1
+    257	    00FC  EB 02			 jmp $+4
+    258	    00FE  6A 00			 push 0
+    259
+    260					 ;iffaux SINON3
+    261	    0100  58			 pop ax
+    262	    0101  3D 0000		 cmp ax,0
+    263	    0104  74 0C	90 90		 je SINON3
+    264
+    265					 ;ecrireChaine
+    266	    0108			 .DATA
+    267	    0004  2D 24			 mess2 DB "-$"
+    268	    0006			 .CODE
+    269	    0108  BA 0004r		 lea dx,mess2
+    270	    010B  52			 push dx
+    271	    010C  E8 0000e		 call ecrch
+    272
+    273					 ;goto FSI3
+    274	    010F  EB 08	90		 jmp FSI3
+    275
+    276	    0112			 SINON3:
+    277					 ;ecrireChaine
+    278	    0112			 .DATA
+    279	    0006  20 24			 mess3 DB " $"
+    280	    0008			 .CODE
+    281	    0112  BA 0006r		 lea dx,mess3
+    282	    0115  52			 push dx
+    283	    0116  E8 0000e		 call ecrch
+    284
+    285	    0119			 FSI3:
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 6
+ex5.ASM
+
+
+
+    286
+    287					 ;iLoad
+    288	    0119  FF 76	FC		 push word ptr [bp-4]
+    289
+    290					 ;iConst
+    291	    011C  6A 01			 push word ptr 1
+    292
+    293					 ;iadd
+    294	    011E  5B			 pop bx
+    295	    011F  58			 pop ax
+    296	    0120  03 C3			 add ax,bx
+    297	    0122  50			 push ax
+    298
+    299					 ;iStore
+    300	    0123  58			 pop ax
+    301	    0124  89 46	FC		 mov word ptr [bp-4],ax
+    302
+    303					 ;goto FAIRE3
+    304	    0127  EB 9C			 jmp FAIRE3
+    305
+    306	    0129			 FAIT3:
+    307					 ;aLaLigne
+    308	    0129  E8 0000e		 call ligsuiv
+    309
+    310					 ;iLoad
+    311	    012C  FF 76	F8		 push word ptr [bp-8]
+    312
+    313					 ;iLoad
+    314	    012F  FF 76	FE		 push word ptr [bp-2]
+    315
+    316					 ;iadd
+    317	    0132  5B			 pop bx
+    318	    0133  58			 pop ax
+    319	    0134  03 C3			 add ax,bx
+    320	    0136  50			 push ax
+    321
+    322					 ;iStore
+    323	    0137  58			 pop ax
+    324	    0138  89 46	F8		 mov word ptr [bp-8],ax
+    325
+    326					 ;iLoad
+    327	    013B  FF 76	FE		 push word ptr [bp-2]
+    328
+    329					 ;iConst
+    330	    013E  6A 01			 push word ptr 1
+    331
+    332					 ;iadd
+    333	    0140  5B			 pop bx
+    334	    0141  58			 pop ax
+    335	    0142  03 C3			 add ax,bx
+    336	    0144  50			 push ax
+    337
+    338					 ;iStore
+    339	    0145  58			 pop ax
+    340	    0146  89 46	FE		 mov word ptr [bp-2],ax
+    341
+    342					 ;goto FAIRE1
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 7
+ex5.ASM
+
+
+
+    343	    0149  E9 FEEE		 jmp FAIRE1
+    344
+    345	    014C			 FAIT1:
+    346					 ;iLoad
+    347	    014C  FF 76	F8		 push word ptr [bp-8]
+    348
+    349					 ;ireturn 8
+    350	    014F  58			 pop ax
+    351	    0150  89 46	08		 mov [bp+8],ax
+    352
+    353					 ;fermebloc 4
+    354	    0153  C9			 leave
+    355	    0154  C2 0004		 ret 4
+    356
+    357	    0157			 debut :
+    358					 STARTUPCODE
+1   359	    0157			 @Startup:
+1   360	    0157  BA 0000s			 MOV	 DX,@data
+1   361	    015A  8E DA				 MOV	 DS,DX
+1   362	    015C  8C D3				 MOV	 BX,SS
+1   363	    015E  2B DA				 SUB	 BX,DX
+1   364	    0160  C1 E3	04			 SHL	 BX,4
+1   365	    0163  8E D2				 MOV	 SS,DX
+1   366	    0165  03 E3				 ADD	 SP,BX
+    367
+    368	    0167			 main:
+    369					 ;ouvbloc 4
+    370	    0167  C8 0004 00		 enter 4,0
+    371					 ;lireEnt
+    372	    016B  8D 56	FC		 lea dx,[bp-4]
+    373	    016E  52			 push dx
+    374	    016F  E8 0000e		 call lirent
+    375
+    376					 ;aLaLigne
+    377	    0172  E8 0000e		 call ligsuiv
+    378
+    379					 ;reserveRetour
+    380	    0175  83 EC	02		 sub sp,2
+    381
+    382					 ;iLoad
+    383	    0178  FF 76	FC		 push word ptr [bp-4]
+    384
+    385					 ;iConst
+    386	    017B  6A FF			 push word ptr -1
+    387
+    388					 ;call dessin
+    389	    017D  E8 FE80		 call dessin
+    390
+    391					 ;iStore
+    392	    0180  58			 pop ax
+    393	    0181  89 46	FE		 mov word ptr [bp-2],ax
+    394
+    395					 ;aLaLigne
+    396	    0184  E8 0000e		 call ligsuiv
+    397
+    398					 ;iLoad
+    399	    0187  FF 76	FE		 push word ptr [bp-2]
+Turbo Assembler	 Version 4.1	    04/11/14 12:22:27	    Page 8
+ex5.ASM
+
+
+
+    400
+    401					 ;ecrireEnt
+    402	    018A  E8 0000e		 call ecrent
+    403
+    404					 ;queue
+    405	    018D  90			 nop
+    406					 EXITCODE
+1   407	    018E  B4 4C				 MOV	 AH,4Ch
+1   408	    0190  CD 21				 INT	 21h
+    409					 end
+1   410						 END @Startup
+

@@ -84,10 +84,10 @@ public class YVMasm extends YVM {
 	/**
 	 * push l'entier lu sur la pile
 	 */
-	public void iConst() {
+	public void iConst(int i) {
 		this.programme += ";iConst\n";
 		if (!arret){
-			this.programme+="push word ptr "+YakaTokenManager.entierLu+"\n\n";
+			this.programme+="push word ptr "+i+"\n\n";
 		}
 	}
 
@@ -166,7 +166,7 @@ public class YVMasm extends YVM {
 	public void ecrireEnt(){
 		if(!arret){
 			if (Yaka.tabIdent.chercheIdent(YakaTokenManager.identLu).getType() == "ENTIER") {
-				this.programme+="ecrireEnt\n";
+				this.programme+=";ecrireEnt\n";
 				this.programme+="call ecrent\n\n";
 			} else {
 				this.programme+=";ecrireBool\n";
@@ -195,8 +195,8 @@ public class YVMasm extends YVM {
 	public void afficherCompare(){
 		if(!arret){
 			switch(this.testIter){
-				case "iegal" : this.programme+=";iegal\npop bx\npop ax\ncmp ax,bx\njne $+\n\n"; break;
-				case "idiff" : this.programme+=";idiff\npop bx\npop ax\ncmp ax,bx\nje $+\n\n"; break;
+				case "iegal" : this.programme+=";iegal\npop bx\npop ax\ncmp ax,bx\njne $+6\npush -1\njmp $+4\npush 0\n\n"; break;
+				case "idiff" : this.programme+=";idiff\npop bx\npop ax\ncmp ax,bx\nje $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 				case "iinf" :  this.programme+=";iinf\npop bx\npop ax\ncmp ax,bx\njge $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 				case "iinfegal" : this.programme+=";iinfegal\npop bx\npop ax\ncmp ax,bx\njg $+6\npush -1\njmp $+4\npush 0\n\n"; break;
 				case "isupegal" :this.programme+=";isupegal\npop bx\npop ax\ncmp ax,bx\njl $+6\npush -1\njmp $+4\npush 0\n\n"; break;
@@ -213,7 +213,8 @@ public class YVMasm extends YVM {
 	public void faire() {
 		if (!arret){
 			this.incrIter++;
-			this.programme+="FAIRE"+this.incrIter+":\n";
+			this.liter.addLast(incrIter);
+			this.programme+="FAIRE"+this.liter.getLast()+":\n";
 			// icrIter est incémenté, il permet d'indiquer le numero de la boucle tantque
 		}
 	}
@@ -225,7 +226,7 @@ public class YVMasm extends YVM {
 	public void fait() {
 		if (!arret){
 
-			this.programme+=";goto FAIRE"+this.incrIter+"\njmp FAIRE"+this.incrIter+"\n\nFAIT"+this.incrIter+":\n";
+			this.programme+=";goto FAIRE"+this.liter.getLast()+"\njmp FAIRE"+this.liter.getLast()+"\n\nFAIT"+this.liter.pollLast()+":\n";
 
 		}
 	}
@@ -236,7 +237,7 @@ public class YVMasm extends YVM {
 	 */
 	public void iter(){
 		if(!arret){
-			this.programme+= ";iffaux FAIT"+this.incrIter+"\npop ax\ncmp ax,0\nje FAIT"+this.incrIter+"\n\n";
+			this.programme+= ";iffaux FAIT"+this.liter.getLast()+"\npop ax\ncmp ax,0\nje FAIT"+this.liter.getLast()+"\n\n";
 		}
 	}
 
@@ -247,7 +248,7 @@ public class YVMasm extends YVM {
 	 */
 	public void cond() {
 		if (!arret){
-			this.programme+=";iffaux SINON"+this.incrCond+"\npop ax\ncmp ax,0\nje SINON"+this.incrCond+"\n\n";
+			this.programme+=";iffaux SINON"+this.lcond.getLast()+"\npop ax\ncmp ax,0\nje SINON"+this.lcond.getLast()+"\n\n";
 		}
 	}
 
@@ -258,7 +259,7 @@ public class YVMasm extends YVM {
 	public void sinon() {
 		if (!arret){
 
-			this.programme+=";goto FSI"+this.incrCond+"\njmp FSI"+this.incrCond+"\n\nSINON"+this.incrCond+":\n";
+			this.programme+=";goto FSI"+this.lcond.getLast()+"\njmp FSI"+this.lcond.getLast()+"\n\nSINON"+this.lcond.getLast()+":\n";
 
 		}
 	}
@@ -270,7 +271,7 @@ public class YVMasm extends YVM {
 	public void fsi() {
 		if (!arret){
 
-			this.programme+="FSI"+this.incrCond+":\n\n";
+			this.programme+="FSI"+this.lcond.pollLast()+":\n\n";
 
 		}
 	}
@@ -315,7 +316,9 @@ public class YVMasm extends YVM {
 	 * Fonction réservant de la place sur la pile pour le retour de la fonction
 	 */
 	public void reserveRetour() {
+		this.nomFonction.addLast(YakaTokenManager.identLu);
 		if(!arret){
+			//System.out.println("ajout Fonction : "+YakaTokenManager.identLu);
 			this.nomFonction.addLast(YakaTokenManager.identLu);
 			this.programme += ";reserveRetour\n";
 			this.programme += "sub sp,2\n\n";
@@ -327,9 +330,9 @@ public class YVMasm extends YVM {
 	 * Fonction permettant de stocker dans programme l'appel à une fonction
 	 */
 	public void call(){
-		this.programme += ";call " + nomFonction.getLast()+"\n";
+		this.programme += ";call ";
 		if(!arret){
-			this.programme += "call "+ nomFonction.removeLast()+"\n\n";
+			this.programme += nomFonction.getLast()+"\ncall "+ nomFonction.removeLast()+"\n\n";
 		}
 	}
 

@@ -64,7 +64,7 @@ public class Yaka {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\n"));
       System.out.println("\n\nfin\n\n");
-      tabIdent.show();
+      //tabIdent.show();
       //System.out.println(out+"\n\n");
       //System.out.println(yvm.genere());
       Ecriture.ecrireString(out, yvm.genere());
@@ -203,13 +203,13 @@ void defConst() : {}
 
 void valConst() : {}{
   <entier> {declaration.stockerEntier(YakaTokenManager.entierLu);
- 	    declaration.stockerType("entier"); }		
+ 	    declaration.stockerType("ENTIER"); }
  | <ident> {declaration.stockerEntier(tabIdent.chercheIdent(YakaTokenManager.identLu).getValue());
  	    declaration.stockerType(tabIdent.chercheIdent(YakaTokenManager.identLu).getType());}				
  | <VRAI>  {declaration.stockerEntier(-1);
- 	    declaration.stockerType("booleen");}				
+ 	    declaration.stockerType("BOOLEEN");}				
  | <FAUX>  {declaration.stockerEntier(0);
- 	    declaration.stockerType("booleen");}				
+ 	    declaration.stockerType("BOOLEEN");}				
 }
 
 
@@ -309,10 +309,10 @@ void primaire(): {}
 }
 
 void valeur() : {}
-{ <entier> {yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
+{ <entier> {yvm.iConst(YakaTokenManager.entierLu); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());}		
  | <ident>{yvm.charger(tabIdent.chercheIdent(YakaTokenManager.identLu));  expression.ajoutType(tabIdent.getTypeIdent(YakaTokenManager.identLu));yvm.stop(expression.typage());}(argumentsFonction())?  							
- | <VRAI> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
- | <FAUX> {yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
+ | <VRAI> {yvm.iConst(-1); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}		
+ | <FAUX> {yvm.iConst(0); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());}	
  
 }
 

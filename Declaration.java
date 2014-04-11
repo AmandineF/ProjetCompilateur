@@ -112,7 +112,7 @@ public class Declaration{
 	 */
 	public void remplirTableauConst(){
 		IdConst idConst = new IdConst(this.typeAStocker,this.entierAStocker);	
-		Yaka.tabIdent.rangeIdent(this.identAStocker, idConst);
+		Yaka.tabIdent.rangeIdent(this.identAStocker,idConst);
 	}
 
 	/**

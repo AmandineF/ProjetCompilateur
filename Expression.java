@@ -26,13 +26,11 @@ public class Expression{
 	 * @return boolean : vrai si les types sont corrects, faux sinon.
 	*/
 	public boolean controleType(){
-
 		String op = loperateur.getLast();
 		String typeA = ltype.get(ltype.size()-1);
 		String typeB = ltype.getLast();
 		int nbErreur = 0;
 		
-
 		switch(op){
 
 		case "+":
@@ -44,7 +42,7 @@ public class Expression{
 				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
-				System.out.println("erreur de type, arret de la compilation");
+				System.out.println("erreur de type opération, arret de la compilation");
 				return false;
 			}else {
 				ltype.removeLast();
@@ -63,7 +61,7 @@ public class Expression{
 				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
-				System.out.println("erreur de type, arret de la compilation");
+				System.out.println("erreur de type comparaison, arret de la compilation");
 				return false;
 			}else {
 				ltype.removeLast();
@@ -75,12 +73,13 @@ public class Expression{
 
 		case "=":
 		case "<>":
-			if ((!( typeA.equals("ENTIER") && typeB.equals("ENTIER") )) || (!(typeA.equals("BOOLEEN") && typeB.equals("BOOLEEN")))){
+			//System.out.println("\n typeA : "+typeA+" typeB : "+typeB+"\n");
+			if( !typeA.equals(typeB)){
 				ltype.removeLast();
 				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
-				System.out.println("erreur de type, arret de la compilation");
+				System.out.println("erreur de type <>, arret de la compilation");
 				return false;
 			}else {
 				ltype.removeLast();

@@ -43,11 +43,13 @@ public class YVM {
 	 * Attribut dans lequel on stocke le numero des conditionnelles
 	 */
 	protected int incrIter;
+	protected LinkedList<Integer> liter = new LinkedList<Integer>();
 
 	/**
 	 * Attribut dans lequel on stocke le numero des itérations
 	 */
 	protected int  incrCond;
+	protected LinkedList<Integer> lcond =new LinkedList<Integer>();
 
 	/**
 	 * Attribut gérant l'arrêt du programme
@@ -241,6 +243,7 @@ public class YVM {
 	 */
 	public void numCond() {
 		this.incrCond ++;
+		this.lcond.addLast(incrCond);
 	}
 
 	/**
@@ -296,9 +299,9 @@ public class YVM {
 	/**
 	 * Fonction permettant de stocker dans programme la traduction immediate de iconst pour les entiers lus
 	 */
-	public void iConst() {
+	public void iConst(int i) {
 		if (!arret){
-			this.programme+="iconst "+YakaTokenManager.entierLu+"\n";
+			this.programme+="iconst "+i+"\n";
 		}
 	}
 
@@ -327,7 +330,8 @@ public class YVM {
 	public void faire() {
 		if (!arret){
 			this.incrIter++;
-			this.programme+="FAIRE"+this.incrIter+":\n";
+			this.liter.addLast(incrIter);
+			this.programme+="FAIRE"+this.liter.getLast()+":\n";
 		}
 	}
 
@@ -336,7 +340,7 @@ public class YVM {
 	 */
 	public void fait() {
 		if (!arret){
-			this.programme+="goto FAIRE"+this.incrIter+"\nFAIT"+this.incrIter+":\n";
+			this.programme+="goto FAIRE"+this.liter.getLast()+"\nFAIT"+this.liter.pollLast()+":\n";
 		}
 	}
 
@@ -345,7 +349,7 @@ public class YVM {
 	 */
 	public void sinon() {
 		if (!arret){
-			this.programme+="goto FSI"+this.incrCond+"\nSINON"+this.incrCond+":\n";   		
+			this.programme+="goto FSI"+this.lcond.getLast()+"\nSINON"+this.lcond.getLast()+":\n";   		
 		}
 	}
 
@@ -356,7 +360,7 @@ public class YVM {
 	public void fsi() {
 		if (!arret){
 
-			this.programme+="FSI"+this.incrCond+":\n";
+			this.programme+="FSI"+this.lcond.pollLast()+":\n";
 
 		}
 	}

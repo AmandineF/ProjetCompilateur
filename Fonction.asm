@@ -255,7 +255,7 @@ call ligsuiv
 ;iLoad
 push word ptr [bp-6]
 
-ecrireEnt
+;ecrireEnt
 call ecrent
 
 ;aLaLigne

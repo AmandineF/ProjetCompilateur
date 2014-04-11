@@ -48,7 +48,7 @@ public class Yaka implements YakaConstants {
       String msg = e.getMessage();
       msg = msg.substring(0,msg.indexOf("\u005cn"));
       System.out.println("\u005cn\u005cnfin\u005cn\u005cn");
-      tabIdent.show();
+      //tabIdent.show();
       //System.out.println(out+"\n\n");
       //System.out.println(yvm.genere());
       Ecriture.ecrireString(out, yvm.genere());
@@ -194,7 +194,7 @@ public class Yaka implements YakaConstants {
     case entier:
       jj_consume_token(entier);
             declaration.stockerEntier(YakaTokenManager.entierLu);
-            declaration.stockerType("entier");
+            declaration.stockerType("ENTIER");
       break;
     case ident:
       jj_consume_token(ident);
@@ -204,12 +204,12 @@ public class Yaka implements YakaConstants {
     case VRAI:
       jj_consume_token(VRAI);
             declaration.stockerEntier(-1);
-            declaration.stockerType("booleen");
+            declaration.stockerType("BOOLEEN");
       break;
     case FAUX:
       jj_consume_token(FAUX);
             declaration.stockerEntier(0);
-            declaration.stockerType("booleen");
+            declaration.stockerType("BOOLEEN");
       break;
     default:
       jj_la1[6] = jj_gen;
@@ -514,7 +514,7 @@ public class Yaka implements YakaConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case entier:
       jj_consume_token(entier);
-            yvm.iConst(); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());
+            yvm.iConst(YakaTokenManager.entierLu); expression.ajoutType("ENTIER"); yvm.stop(expression.typage());
       break;
     case ident:
       jj_consume_token(ident);
@@ -530,11 +530,11 @@ public class Yaka implements YakaConstants {
       break;
     case VRAI:
       jj_consume_token(VRAI);
-           yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());
+           yvm.iConst(-1); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());
       break;
     case FAUX:
       jj_consume_token(FAUX);
-           yvm.iConst(); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());
+           yvm.iConst(0); expression.ajoutType("BOOLEEN");yvm.stop(expression.typage());
       break;
     default:
       jj_la1[22] = jj_gen;

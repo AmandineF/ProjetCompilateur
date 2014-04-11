@@ -1,0 +1,8 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 0024CH 0024DH _TEXT              CODE
+ 0024EH 0027DH 00030H _DATA              DATA
+
+Program entry point at 0000:007D
+
