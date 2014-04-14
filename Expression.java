@@ -91,12 +91,13 @@ public class Expression{
 
 		case "et":
 		case "ou":
+			System.out.println("\n typeA : "+typeA+" typeB : "+typeB+"\n");
 			if (!( typeA.equals("BOOLEEN") && typeB.equals("BOOLEEN") )) {
 				ltype.removeLast();
 				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
-				System.out.println("erreur de type, arret de la compilation");
+				System.out.println("erreur de type OU, arret de la compilation");
 				return false;
 			}else {
 				ltype.removeLast();
@@ -111,7 +112,7 @@ public class Expression{
 				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
-				System.out.println("erreur de type, arret de la compilation");
+				System.out.println("erreur de type NEG, arret de la compilation");
 				return false;
 			}else {
 				ltype.removeLast();
@@ -125,7 +126,7 @@ public class Expression{
 				ltype.removeLast();
 				ltype.addLast("ERREUR");
 				loperateur.removeLast();
-				System.out.println("erreur de type, arret de la compilation");
+				System.out.println("erreur de type NON, arret de la compilation");
 				return false;
 			}else {
 				ltype.removeLast();

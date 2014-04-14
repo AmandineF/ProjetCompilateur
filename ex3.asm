@@ -286,7 +286,233 @@ lea dx,mess1
 push dx
 call ecrch
 
+;lireEnt
+lea dx,[bp-6]
+push dx
+call lirent
+
+;aLaLigne
+call ligsuiv
+
+;ecrireChaine
+.DATA
+mess2 DB "fact(n)= $"
+.CODE
+lea dx,mess2
+push dx
+call ecrch
+
+;reserveRetour
+sub sp,2
+
+;iLoad
+push word ptr [bp-6]
+
+;call facto
+call facto
+
+;iStore
+pop ax
+mov word ptr [bp-8],ax
+
+;iLoad
+push word ptr [bp-8]
+
+;ecrireEnt
+call ecrent
+
 ;goto FSI2
 jmp FSI2
 
 SINON2:
+;iLoad
+push word ptr [bp-10]
+
+;iConst
+push word ptr 3
+
+;idiff
+pop bx
+pop ax
+cmp ax,bx
+je $+6
+push -1
+jmp $+4
+push 0
+
+;iffaux SINON3
+pop ax
+cmp ax,0
+je SINON3
+
+;ecrireChaine
+.DATA
+mess3 DB "n:$"
+.CODE
+lea dx,mess3
+push dx
+call ecrch
+
+;lireEnt
+lea dx,[bp-6]
+push dx
+call lirent
+
+;aLaLigne
+call ligsuiv
+
+;ecrireChaine
+.DATA
+mess4 DB "p:$"
+.CODE
+lea dx,mess4
+push dx
+call ecrch
+
+;lireEnt
+lea dx,[bp-8]
+push dx
+call lirent
+
+;aLaLigne
+call ligsuiv
+
+;iLoad
+push word ptr [bp-6]
+
+;iLoad
+push word ptr [bp-8]
+
+;iinf
+pop bx
+pop ax
+cmp ax,bx
+jge $+6
+push -1
+jmp $+4
+push 0
+
+;iffaux SINON4
+pop ax
+cmp ax,0
+je SINON4
+
+;ecrireChaine
+.DATA
+mess5 DB "n<p impossible$"
+.CODE
+lea dx,mess5
+push dx
+call ecrch
+
+;goto FSI4
+jmp FSI4
+
+SINON4:
+;iLoad
+push word ptr [bp-10]
+
+;iConst
+push word ptr 1
+
+;iegal
+pop bx
+pop ax
+cmp ax,bx
+jne $+6
+push -1
+jmp $+4
+push 0
+
+;iffaux SINON5
+pop ax
+cmp ax,0
+je SINON5
+
+;reserveRetour
+sub sp,2
+
+;iLoad
+push word ptr [bp-6]
+
+;iLoad
+push word ptr [bp-8]
+
+;call arrang
+call arrang
+
+;iStore
+pop ax
+mov word ptr [bp-4],ax
+
+;ecrireChaine
+.DATA
+mess6 DB "A(n,p)=$"
+.CODE
+lea dx,mess6
+push dx
+call ecrch
+
+;iLoad
+push word ptr [bp-4]
+
+;ecrireEnt
+call ecrent
+
+;goto FSI5
+jmp FSI5
+
+SINON5:
+;reserveRetour
+sub sp,2
+
+;iLoad
+push word ptr [bp-6]
+
+;iLoad
+push word ptr [bp-8]
+
+;call combin
+call combin
+
+;iStore
+pop ax
+mov word ptr [bp-2],ax
+
+;ecrireChaine
+.DATA
+mess7 DB "C(n,p)=$"
+.CODE
+lea dx,mess7
+push dx
+call ecrch
+
+;iLoad
+push word ptr [bp-2]
+
+;ecrireEnt
+call ecrent
+
+FSI5:
+
+;aLaLigne
+call ligsuiv
+
+FSI4:
+
+;goto FSI3
+jmp FSI3
+
+SINON3:
+FSI3:
+
+FSI2:
+
+;goto FAIRE1
+jmp FAIRE1
+
+FAIT1:
+;queue
+nop
+EXITCODE
+end

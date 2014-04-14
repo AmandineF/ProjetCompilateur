@@ -234,8 +234,10 @@ void type() :{}
 /*
  * Syntaxe des instructions.
  */
-void suiteExpr() : {}
-{expression() (";" (expression())? )*}
+void suiteExpr() : {} 
+{
+	expression() (";" (expression())? )*
+}
 
 void suiteInstr() :{}
 {
@@ -265,9 +267,10 @@ void lecture() :{}
 void ecriture() :{}
 {
         (<ECRIRE> "(" 
-        (expression() {yvm.ecrireEnt();}
+        (expression() {yvm.ecrireEnt();} 
         | <chaine> {yvm.ecrireChaine();}) ")")
-        | <ALALIGNE> {yvm.aLaLigne();}
+        | <ALALIGNE> {yvm.aLaLigne();} 
+       
 }
 
 /*
@@ -363,9 +366,9 @@ void conditionnelle() : {}
 	<SI> {yvm.numCond();}
 	expression() {yvm.cond();}
 	<ALORS>
-	instruction() {yvm.sinon();}
+	suiteInstr() {yvm.sinon();}
 	(<SINON>
-	instruction())?
+	suiteInstr())?
 	<FSI> {yvm.fsi();}
 }
 

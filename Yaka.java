@@ -654,12 +654,12 @@ public class Yaka implements YakaConstants {
     expression();
                       yvm.cond();
     jj_consume_token(ALORS);
-    instruction();
-                       yvm.sinon();
+    suiteInstr();
+                      yvm.sinon();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case SINON:
       jj_consume_token(SINON);
-      instruction();
+      suiteInstr();
       break;
     default:
       jj_la1[27] = jj_gen;
